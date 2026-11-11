@@ -1,0 +1,286 @@
+{
+  "apis": [
+    {
+      "file": "src/shortener/api.py",
+      "function": "get_stats",
+      "method": "GET",
+      "path": "/api/v1/urls/{code}/stats",
+      "requirement_id": "FR-1"
+    }
+  ],
+  "breaking_changes": [],
+  "components": [
+    {
+      "name": "src/shortener/api.py",
+      "symbols": [
+        "_now",
+        "_session",
+        "_present",
+        "_rate_headers",
+        "root",
+        "health",
+        "ready",
+        "create_url",
+        "get_metadata",
+        "get_stats",
+        "delete_url",
+        "redirect_code"
+      ]
+    },
+    {
+      "name": "src/shortener/app.py",
+      "symbols": [
+        "_error_body",
+        "_ensure_parent",
+        "create_app",
+        "logger"
+      ]
+    },
+    {
+      "name": "src/shortener/clock.py",
+      "symbols": [
+        "SystemClock",
+        "FrozenClock"
+      ]
+    },
+    {
+      "name": "src/shortener/codes.py",
+      "symbols": [
+        "generate_code",
+        "ALPHABET",
+        "RESERVED_ALIASES"
+      ]
+    },
+    {
+      "name": "src/shortener/config.py",
+      "symbols": [
+        "sqlite_url",
+        "Settings"
+      ]
+    },
+    {
+      "name": "src/shortener/db.py",
+      "symbols": [
+        "make_engine",
+        "build_session_factory",
+        "Base"
+      ]
+    },
+    {
+      "name": "src/shortener/errors.py",
+      "symbols": [
+        "AppError"
+      ]
+    },
+    {
+      "name": "src/shortener/logging_config.py",
+      "symbols": [
+        "configure_logging",
+        "JsonFormatter"
+      ]
+    },
+    {
+      "name": "src/shortener/main.py",
+      "symbols": [
+        "app"
+      ]
+    },
+    {
+      "name": "src/shortener/models.py",
+      "symbols": [
+        "ShortLink",
+        "Click"
+      ]
+    },
+    {
+      "name": "src/shortener/paths.py",
+      "symbols": [
+        "repo_root"
+      ]
+    },
+    {
+      "name": "src/shortener/rate_limit.py",
+      "symbols": [
+        "LimitDecision",
+        "SlidingWindowLimiter"
+      ]
+    },
+    {
+      "name": "src/shortener/schemas.py",
+      "symbols": [
+        "_aware",
+        "CreateLinkIn",
+        "LinkOut",
+        "CreateLinkOut",
+        "ReferrerCount",
+        "DayCount",
+        "StatsOut"
+      ]
+    },
+    {
+      "name": "src/shortener/service.py",
+      "symbols": [
+        "_as_datetime",
+        "utcnow",
+        "as_utc",
+        "request_fingerprint",
+        "link_status",
+        "get_link",
+        "resolve_redirect",
+        "record_click",
+        "deactivate_link",
+        "link_stats",
+        "create_link",
+        "_fresh_code"
+      ]
+    },
+    {
+      "name": "src/shortener/validation.py",
+      "symbols": [
+        "validate_target_url",
+        "validate_alias",
+        "validate_idempotency_key",
+        "_ALIAS",
+        "_IDEMPOTENCY",
+        "_ALLOWED_SCHEMES"
+      ]
+    }
+  ],
+  "data_model": [
+    {
+      "class": "ShortLink",
+      "columns": [
+        "id",
+        "code",
+        "target_url",
+        "is_custom",
+        "expires_at",
+        "disabled_at",
+        "idempotency_key",
+        "request_hash",
+        "created_at",
+        "clicks"
+      ],
+      "module": "src/shortener/models.py"
+    },
+    {
+      "class": "Click",
+      "columns": [
+        "id",
+        "link_id",
+        "clicked_at",
+        "clicked_day",
+        "referrer",
+        "link"
+      ],
+      "module": "src/shortener/models.py"
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Redirect with 302 and Cache-Control: no-store",
+      "why": "A cached 301 would keep sending people to a target after expiry or disable."
+    },
+    {
+      "decision": "Non-sequential codes from a CSPRNG alphabet",
+      "why": "A counter leaks volume and lets neighbors guess nearby links."
+    },
+    {
+      "decision": "Soft delete",
+      "why": "Metadata and stats stay explainable after a link is turned off."
+    },
+    {
+      "decision": "Idempotency-Key compares a hash of the request, not of the derived expiry instant",
+      "why": "A replay must return the original row. Recomputing ttl from 'now' would mint a second link."
+    },
+    {
+      "decision": "The implementation stage verifies the repository and does not rewrite it",
+      "why": "Code changes stay in reviewable commits. The workflow proves the tree matches the requirements."
+    }
+  ],
+  "discovered_routes": [
+    {
+      "function": "root",
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "function": "health",
+      "method": "GET",
+      "path": "/health"
+    },
+    {
+      "function": "ready",
+      "method": "GET",
+      "path": "/ready"
+    },
+    {
+      "function": "create_url",
+      "method": "POST",
+      "path": "/api/v1/urls"
+    },
+    {
+      "function": "get_metadata",
+      "method": "GET",
+      "path": "/api/v1/urls/{code}"
+    },
+    {
+      "function": "get_stats",
+      "method": "GET",
+      "path": "/api/v1/urls/{code}/stats"
+    },
+    {
+      "function": "delete_url",
+      "method": "DELETE",
+      "path": "/api/v1/urls/{code}"
+    },
+    {
+      "function": "redirect_code",
+      "method": "GET",
+      "path": "/{code}"
+    }
+  ],
+  "failure_modes": [
+    {
+      "condition": "Unknown code",
+      "response": "404 not_found"
+    },
+    {
+      "condition": "Expired or disabled link",
+      "response": "410 expired or disabled"
+    },
+    {
+      "condition": "Alias already used",
+      "response": "409 alias_taken"
+    },
+    {
+      "condition": "Same Idempotency-Key, different body",
+      "response": "409 idempotency_conflict"
+    },
+    {
+      "condition": "Non-http(s) scheme or embedded credentials",
+      "response": "422 unsafe_url"
+    },
+    {
+      "condition": "Create rate exceeded",
+      "response": "429 rate_limited"
+    },
+    {
+      "condition": "Generated code collides",
+      "response": "Retry with a new code, then 503"
+    },
+    {
+      "condition": "Click insert fails",
+      "response": "Log and still redirect"
+    }
+  ],
+  "impact_analysis": null,
+  "kind": "ambiguous",
+  "markdown": "# make links better\n\nChosen interpretation 'analytics'. Make links better by exposing click analytics: total clicks, last access, top referrers, and clicks per day.\n\n## Requirements in scope\n\n- **FR-1**: Expose click analytics for a short link.\n  - Acceptance: GET /api/v1/urls/{code}/stats returns total clicks, last access, top referrers, and clicks per day.\n\n## API surface grounded in the source tree\n\n- `GET /api/v1/urls/{code}/stats` in `src/shortener/api.py` (`get_stats`) for FR-1\n\n## Data model\n\n- `ShortLink` in `src/shortener/models.py`: id, code, target_url, is_custom, expires_at, disabled_at, idempotency_key, request_hash, created_at, clicks\n- `Click` in `src/shortener/models.py`: id, link_id, clicked_at, clicked_day, referrer, link\n\n## Decisions\n\n- **Redirect with 302 and Cache-Control: no-store.** A cached 301 would keep sending people to a target after expiry or disable.\n- **Non-sequential codes from a CSPRNG alphabet.** A counter leaks volume and lets neighbors guess nearby links.\n- **Soft delete.** Metadata and stats stay explainable after a link is turned off.\n- **Idempotency-Key compares a hash of the request, not of the derived expiry instant.** A replay must return the original row. Recomputing ttl from 'now' would mint a second link.\n- **The implementation stage verifies the repository and does not rewrite it.** Code changes stay in reviewable commits. The workflow proves the tree matches the requirements.\n\n## Failure modes\n\n- Unknown code: 404 not_found\n- Expired or disabled link: 410 expired or disabled\n- Alias already used: 409 alias_taken\n- Same Idempotency-Key, different body: 409 idempotency_conflict\n- Non-http(s) scheme or embedded credentials: 422 unsafe_url\n- Create rate exceeded: 429 rate_limited\n- Generated code collides: Retry with a new code, then 503\n- Click insert fails: Log and still redirect\n",
+  "requirement_ids": [
+    "FR-1"
+  ],
+  "selected_interpretation": "analytics",
+  "summary": "Chosen interpretation 'analytics'. Make links better by exposing click analytics: total clicks, last access, top referrers, and clicks per day.",
+  "title": "make links better"
+}

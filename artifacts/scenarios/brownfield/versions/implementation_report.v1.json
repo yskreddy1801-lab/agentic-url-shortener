@@ -1,0 +1,49 @@
+{
+  "gaps": [],
+  "note": "This stage checks that each requirement names a route or symbol present in the tree. Behavioral proof is the testing stage, which executes the shortener suite.",
+  "requirements": [
+    {
+      "evidence": [
+        {
+          "method": "POST",
+          "path": "/api/v1/urls",
+          "type": "route"
+        }
+      ],
+      "id": "FR-1",
+      "statement": "Accept an optional alias on POST /api/v1/urls.",
+      "status": "satisfied"
+    },
+    {
+      "evidence": [
+        {
+          "method": "POST",
+          "path": "/api/v1/urls",
+          "type": "route"
+        },
+        {
+          "method": "GET",
+          "path": "/{code}",
+          "type": "route"
+        }
+      ],
+      "id": "FR-2",
+      "statement": "Accept an optional expiration on POST /api/v1/urls.",
+      "status": "satisfied"
+    },
+    {
+      "evidence": [
+        {
+          "method": "GET",
+          "path": "/api/v1/urls/{code}/stats",
+          "type": "route"
+        }
+      ],
+      "id": "FR-3",
+      "statement": "Keep analytics available with GET /api/v1/urls/{code}/stats after expiry.",
+      "status": "satisfied"
+    }
+  ],
+  "route_count": 8,
+  "verified": true
+}

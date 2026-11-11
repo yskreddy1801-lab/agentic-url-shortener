@@ -1,0 +1,16 @@
+{
+  "blocking": false,
+  "breaking_changes": [],
+  "findings": [
+    {
+      "message": "Redirecting a browser to a caller-supplied http(s) URL is the product. The javascript scheme, data, file, and embedded credentials are rejected at create time.",
+      "policy": "open_redirect_is_the_product",
+      "severity": "info"
+    },
+    {
+      "message": "Anyone who knows a code can read stats and disable the link. Generated codes are high entropy. Custom aliases are not a security boundary.",
+      "policy": "unauthenticated_capabilities",
+      "severity": "info"
+    }
+  ]
+}

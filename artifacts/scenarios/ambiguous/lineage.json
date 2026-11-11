@@ -1,0 +1,203 @@
+{
+  "artifacts": [
+    {
+      "hash": "619167eaf787a2dc5fee83b4e1a30563698b21e11f69cc382a3aace74648e905",
+      "is_current": true,
+      "name": "design",
+      "stage_id": "architecture",
+      "version": 1
+    },
+    {
+      "hash": "3b5c4070705825f928aa7a906d91d044a8978c9d236559fbbc8c747624e67528",
+      "is_current": true,
+      "name": "docs_snippet",
+      "stage_id": "documentation",
+      "version": 1
+    },
+    {
+      "hash": "674141e777e1b5f14132437997b9a2821a9e7332f232144881d5d1821125a5f7",
+      "is_current": true,
+      "name": "implementation_report",
+      "stage_id": "implementation",
+      "version": 1
+    },
+    {
+      "hash": "bf531e3b82f2a3805ac8f5f5626927d15c8257f895329b3a764d317c361c713a",
+      "is_current": true,
+      "name": "normalized_requirements",
+      "stage_id": "requirements",
+      "version": 1
+    },
+    {
+      "hash": "e3bc1ff68d62b5171e36b1ba40c4b01e62a7482cab8d1f1260b16c85b95128a3",
+      "is_current": true,
+      "name": "release_checklist",
+      "stage_id": "release_readiness",
+      "version": 1
+    },
+    {
+      "hash": "2c2f005d94948e6ead28835df3f992512601aaa49f1aede1f6aa2286e09abe91",
+      "is_current": true,
+      "name": "release_report",
+      "stage_id": "release_readiness",
+      "version": 1
+    },
+    {
+      "hash": "072de968941e5d1ef2a9e265328a8567a751597376ee1d3992834a9e05ac8e6c",
+      "is_current": true,
+      "name": "security_review",
+      "stage_id": "security_review",
+      "version": 1
+    },
+    {
+      "hash": "9ae69ec512009e41edc50b1c8aa7ebe6f8b724d58482e1564cda9faedd5743c6",
+      "is_current": true,
+      "name": "test_report",
+      "stage_id": "testing",
+      "version": 1
+    }
+  ],
+  "checkpoints": [
+    {
+      "created_at": "2026-11-06T17:39:22.075125+00:00",
+      "id": "ckpt_a519eaed88",
+      "label": "init"
+    },
+    {
+      "created_at": "2026-11-06T17:39:22.086286+00:00",
+      "id": "ckpt_0adb8ad37c",
+      "label": "pre_decision:requirements"
+    },
+    {
+      "created_at": "2026-11-06T17:39:22.104442+00:00",
+      "id": "ckpt_325c2f6c96",
+      "label": "after:requirements"
+    },
+    {
+      "created_at": "2026-11-06T17:39:22.131031+00:00",
+      "id": "ckpt_cfaa4e7961",
+      "label": "after:architecture"
+    },
+    {
+      "created_at": "2026-11-06T17:39:22.155962+00:00",
+      "id": "ckpt_0224b1c405",
+      "label": "after:implementation"
+    },
+    {
+      "created_at": "2026-11-06T17:39:22.192627+00:00",
+      "id": "ckpt_7799ddcfd5",
+      "label": "after:documentation"
+    },
+    {
+      "created_at": "2026-11-06T17:39:22.205047+00:00",
+      "id": "ckpt_8afb75061a",
+      "label": "after:security_review"
+    },
+    {
+      "created_at": "2026-11-06T17:39:23.329119+00:00",
+      "id": "ckpt_4f2e565f1f",
+      "label": "after:testing"
+    },
+    {
+      "created_at": "2026-11-06T17:39:23.334094+00:00",
+      "id": "ckpt_d2ebeaf301",
+      "label": "pre_approval:release_readiness"
+    },
+    {
+      "created_at": "2026-11-06T17:39:23.366724+00:00",
+      "id": "ckpt_dd57ed8939",
+      "label": "after:release_readiness"
+    }
+  ],
+  "decisions": [
+    {
+      "actor": "demo_policy",
+      "alternatives": [
+        {
+          "acceptance": [
+            "GET /api/v1/urls/{code}/stats returns total clicks, last access, top referrers, and clicks per day."
+          ],
+          "breaking": false,
+          "fits_existing_code": true,
+          "id": "analytics",
+          "risk": "low",
+          "scope": "narrow",
+          "score": 1.0,
+          "statement": "Expose click analytics for a short link.",
+          "summary": "Make links better by exposing click analytics: total clicks, last access, top referrers, and clicks per day.",
+          "testable": true,
+          "title": "Explain how links perform"
+        },
+        {
+          "acceptance": [
+            "POST /api/v1/urls accepts an alias and GET /{code} redirects for that alias."
+          ],
+          "breaking": false,
+          "fits_existing_code": true,
+          "id": "aliases",
+          "risk": "low",
+          "scope": "medium",
+          "score": 0.9,
+          "statement": "Accept an optional custom alias when creating a short link.",
+          "summary": "Make links better by allowing a custom alias on create, with reserved-word and collision checks.",
+          "testable": true,
+          "title": "Let people choose readable aliases"
+        },
+        {
+          "acceptance": [
+            "A retention policy updates links that were created without an expiration."
+          ],
+          "breaking": true,
+          "fits_existing_code": false,
+          "id": "auto_expire_all",
+          "risk": "high",
+          "scope": "wide",
+          "score": 0.25,
+          "statement": "Automatically expire every existing link after 7 days.",
+          "summary": "Make links better by force-expiring every existing link after 7 days, including links that were created without a TTL.",
+          "testable": true,
+          "title": "Expire every existing link"
+        }
+      ],
+      "created_at": "2026-11-06T17:39:22.089903+00:00",
+      "id": "dec_a4990877e1",
+      "invalidated": false,
+      "kind": "ambiguity",
+      "payload": {},
+      "question": "The brief does not pin down a single engineering outcome. Choose an interpretation.",
+      "rationale": "Selected 'analytics' with score 1.0. Rule: highest rubric score, then lexical id. Ranking: analytics=1.0, aliases=0.9, auto_expire_all=0.25. Non-breaking, testable, low-risk, in-codebase, and narrow scope score higher. Demo mode records this choice so the run can continue. A supervised run pauses until a person picks an interpretation.",
+      "rule": "max_rubric_score_then_lexical_id",
+      "run_id": "run_e24d467aa88f",
+      "selected": "analytics",
+      "stage_id": "requirements"
+    },
+    {
+      "actor": "demo_policy",
+      "alternatives": [
+        {
+          "id": "approved",
+          "title": "Approve"
+        },
+        {
+          "id": "rejected",
+          "title": "Reject"
+        }
+      ],
+      "created_at": "2026-11-06T17:39:23.338736+00:00",
+      "id": "dec_79238b1e79",
+      "invalidated": false,
+      "kind": "approval",
+      "payload": {
+        "accept_breaking": false,
+        "note": "demo auto-approve"
+      },
+      "question": "Release readiness is a high-impact checkpoint. Approve it to publish the release report.",
+      "rationale": "Demo mode records the pre-approval checkpoint and then auto-approves so a CLI run can finish. This is not a human release sign-off.",
+      "rule": "demo_auto_approve",
+      "run_id": "run_e24d467aa88f",
+      "selected": "approved",
+      "stage_id": "release_readiness"
+    }
+  ],
+  "run_id": "run_e24d467aa88f"
+}

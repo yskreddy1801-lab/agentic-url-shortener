@@ -1,0 +1,4 @@
+{
+  "markdown": "# Custom aliases and expiration\n\nThe shortener already creates links, redirects them, and records clicks. Add optional custom aliases and optional expiration without changing links that use neither.\n\n## What shipped in this scope\n\n- FR-1: Accept an optional alias on POST /api/v1/urls.\n- FR-2: Accept an optional expiration on POST /api/v1/urls.\n- FR-3: Keep analytics available with GET /api/v1/urls/{code}/stats after expiry.\n\n## How to call it\n\nCreate a link:\n\n```bash\ncurl -s -X POST http://127.0.0.1:8741/api/v1/urls \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"url\":\"https://example.com/docs\"}'\n```\n\nRoutes traced to the repository:\n\n- `POST /api/v1/urls`\n- `POST /api/v1/urls`\n- `GET /{code}`\n- `GET /api/v1/urls/{code}/stats`\n\nRedirects use HTTP 302 and `Cache-Control: no-store`. Expired and disabled links return 410.\n",
+  "title": "Custom aliases and expiration"
+}

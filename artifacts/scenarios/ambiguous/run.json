@@ -1,0 +1,19 @@
+{
+  "config": {
+    "kind": "ambiguous",
+    "title": "Resolve an underspecified request before designing it"
+  },
+  "created_at": "2026-11-06T17:39:22.069436+00:00",
+  "finished_at": "2026-11-06T17:39:23.369054+00:00",
+  "human_input": null,
+  "id": "run_e24d467aa88f",
+  "mode": "demo",
+  "pause_details": null,
+  "pause_kind": null,
+  "pause_stage": null,
+  "scenario": "ambiguous",
+  "started_at": "2026-11-06T17:39:22.069436+00:00",
+  "status": "succeeded",
+  "stop_requested": false,
+  "updated_at": "2026-11-06T17:39:23.369224+00:00"
+}

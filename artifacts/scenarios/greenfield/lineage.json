@@ -1,0 +1,137 @@
+{
+  "artifacts": [
+    {
+      "hash": "90a345c76c0178ea68af98980bad645fb6ba308032403615e457d97df31f3dca",
+      "is_current": true,
+      "name": "design",
+      "stage_id": "architecture",
+      "version": 1
+    },
+    {
+      "hash": "9ebfdff4029cb944d39ca0d27502d89102735e4d1d16601a1aaba5b526f4c1b9",
+      "is_current": true,
+      "name": "docs_snippet",
+      "stage_id": "documentation",
+      "version": 1
+    },
+    {
+      "hash": "d788a87f5a4c54b5a470ddf358a6d817148595b33d4d48d4d2f8fd970a62bca1",
+      "is_current": true,
+      "name": "implementation_report",
+      "stage_id": "implementation",
+      "version": 1
+    },
+    {
+      "hash": "93aeddb5f372b86af014ef80450033df8df40dc0f45bf12a06bacbb327912326",
+      "is_current": true,
+      "name": "normalized_requirements",
+      "stage_id": "requirements",
+      "version": 1
+    },
+    {
+      "hash": "7f9ace11d0d888c8ad6320882b7a982668e0bca270b90b7b3479e2a3ae429010",
+      "is_current": true,
+      "name": "release_checklist",
+      "stage_id": "release_readiness",
+      "version": 1
+    },
+    {
+      "hash": "00694a14008c3fa83eb95e508dac476ec6f8e7c7f6dc54777fd69912be5bb3aa",
+      "is_current": true,
+      "name": "release_report",
+      "stage_id": "release_readiness",
+      "version": 1
+    },
+    {
+      "hash": "072de968941e5d1ef2a9e265328a8567a751597376ee1d3992834a9e05ac8e6c",
+      "is_current": true,
+      "name": "security_review",
+      "stage_id": "security_review",
+      "version": 1
+    },
+    {
+      "hash": "9fe4dca7fb5548883469d1a52f639ff406252a49b2e7a2971529f55c4de82d9a",
+      "is_current": true,
+      "name": "test_report",
+      "stage_id": "testing",
+      "version": 1
+    }
+  ],
+  "checkpoints": [
+    {
+      "created_at": "2026-11-06T17:39:19.462316+00:00",
+      "id": "ckpt_27ce6fe016",
+      "label": "init"
+    },
+    {
+      "created_at": "2026-11-06T17:39:19.492067+00:00",
+      "id": "ckpt_530dbf6aed",
+      "label": "after:requirements"
+    },
+    {
+      "created_at": "2026-11-06T17:39:19.520218+00:00",
+      "id": "ckpt_204ca2932b",
+      "label": "after:architecture"
+    },
+    {
+      "created_at": "2026-11-06T17:39:19.559205+00:00",
+      "id": "ckpt_e1cb531f2c",
+      "label": "after:implementation"
+    },
+    {
+      "created_at": "2026-11-06T17:39:19.617498+00:00",
+      "id": "ckpt_525058e59e",
+      "label": "after:security_review"
+    },
+    {
+      "created_at": "2026-11-06T17:39:19.619262+00:00",
+      "id": "ckpt_a388502390",
+      "label": "after:documentation"
+    },
+    {
+      "created_at": "2026-11-06T17:39:20.754739+00:00",
+      "id": "ckpt_3d278724c9",
+      "label": "after:testing"
+    },
+    {
+      "created_at": "2026-11-06T17:39:20.760064+00:00",
+      "id": "ckpt_0ba2742ec9",
+      "label": "pre_approval:release_readiness"
+    },
+    {
+      "created_at": "2026-11-06T17:39:20.796024+00:00",
+      "id": "ckpt_7b344e0349",
+      "label": "after:release_readiness"
+    }
+  ],
+  "decisions": [
+    {
+      "actor": "demo_policy",
+      "alternatives": [
+        {
+          "id": "approved",
+          "title": "Approve"
+        },
+        {
+          "id": "rejected",
+          "title": "Reject"
+        }
+      ],
+      "created_at": "2026-11-06T17:39:20.764395+00:00",
+      "id": "dec_c0ec25a51d",
+      "invalidated": false,
+      "kind": "approval",
+      "payload": {
+        "accept_breaking": false,
+        "note": "demo auto-approve"
+      },
+      "question": "Release readiness is a high-impact checkpoint. Approve it to publish the release report.",
+      "rationale": "Demo mode records the pre-approval checkpoint and then auto-approves so a CLI run can finish. This is not a human release sign-off.",
+      "rule": "demo_auto_approve",
+      "run_id": "run_f66b1788f594",
+      "selected": "approved",
+      "stage_id": "release_readiness"
+    }
+  ],
+  "run_id": "run_f66b1788f594"
+}

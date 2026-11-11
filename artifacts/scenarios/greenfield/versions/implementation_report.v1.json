@@ -1,0 +1,92 @@
+{
+  "gaps": [],
+  "note": "This stage checks that each requirement names a route or symbol present in the tree. Behavioral proof is the testing stage, which executes the shortener suite.",
+  "requirements": [
+    {
+      "evidence": [
+        {
+          "method": "POST",
+          "path": "/api/v1/urls",
+          "type": "route"
+        }
+      ],
+      "id": "FR-1",
+      "statement": "Create a short link with POST /api/v1/urls.",
+      "status": "satisfied"
+    },
+    {
+      "evidence": [
+        {
+          "method": "GET",
+          "path": "/{code}",
+          "type": "route"
+        }
+      ],
+      "id": "FR-2",
+      "statement": "Redirect with GET /{code} and record the click.",
+      "status": "satisfied"
+    },
+    {
+      "evidence": [
+        {
+          "method": "GET",
+          "path": "/api/v1/urls/{code}",
+          "type": "route"
+        }
+      ],
+      "id": "FR-3",
+      "statement": "Read metadata with GET /api/v1/urls/{code}.",
+      "status": "satisfied"
+    },
+    {
+      "evidence": [
+        {
+          "method": "GET",
+          "path": "/api/v1/urls/{code}/stats",
+          "type": "route"
+        }
+      ],
+      "id": "FR-4",
+      "statement": "Read analytics with GET /api/v1/urls/{code}/stats.",
+      "status": "satisfied"
+    },
+    {
+      "evidence": [
+        {
+          "method": "DELETE",
+          "path": "/api/v1/urls/{code}",
+          "type": "route"
+        }
+      ],
+      "id": "FR-5",
+      "statement": "Disable a link with DELETE /api/v1/urls/{code}.",
+      "status": "satisfied"
+    },
+    {
+      "evidence": [
+        {
+          "method": "GET",
+          "path": "/health",
+          "type": "route"
+        }
+      ],
+      "id": "FR-6",
+      "statement": "Report process health with GET /health.",
+      "status": "satisfied"
+    },
+    {
+      "evidence": [
+        {
+          "method": "GET",
+          "path": "/ready",
+          "type": "route"
+        }
+      ],
+      "id": "FR-7",
+      "statement": "Report dependency readiness with GET /ready.",
+      "status": "satisfied"
+    }
+  ],
+  "route_count": 8,
+  "verified": true
+}

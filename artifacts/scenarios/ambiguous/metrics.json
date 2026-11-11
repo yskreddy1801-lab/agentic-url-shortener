@@ -1,0 +1,33 @@
+{
+  "approval_count": 1,
+  "decision_count": 1,
+  "definitions": {
+    "end_to_end_latency_ms": "Run start to the timestamp recorded when the run left the executing state. Null while still running or paused.",
+    "mttr_ms": "Mean time from the first failed attempt of a stage to a later successful attempt in the same run. Null when no stage recovered.",
+    "parallelism_max": "Peak number of stage attempts whose start/finish intervals overlap.",
+    "stage_success_rate": "Stages in a success status divided by stages in the graph. Pending and failed stages count against the rate."
+  },
+  "end_to_end_latency_ms": 1299,
+  "fallback_count": 0,
+  "mode": "demo",
+  "mttr_ms": null,
+  "parallelism_max": 2,
+  "policy_violation_count": 0,
+  "retry_count": 0,
+  "rollback_count": 0,
+  "run_id": "run_e24d467aa88f",
+  "scenario": "ambiguous",
+  "stage_count": 7,
+  "stage_success_rate": 1.0,
+  "stage_timings_ms": {
+    "architecture": 15,
+    "documentation": 18,
+    "implementation": 15,
+    "release_readiness": 19,
+    "requirements": 19,
+    "security_review": 35,
+    "testing": 1137
+  },
+  "stages_succeeded": 7,
+  "status": "succeeded"
+}

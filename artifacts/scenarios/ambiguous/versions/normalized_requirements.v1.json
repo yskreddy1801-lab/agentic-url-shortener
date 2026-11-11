@@ -1,0 +1,87 @@
+{
+  "actors": [
+    "client application",
+    "link recipient",
+    "operator"
+  ],
+  "ambiguity": {
+    "interpretations": [
+      {
+        "acceptance": [
+          "GET /api/v1/urls/{code}/stats returns total clicks, last access, top referrers, and clicks per day."
+        ],
+        "breaking": false,
+        "fits_existing_code": true,
+        "id": "analytics",
+        "risk": "low",
+        "scope": "narrow",
+        "score": 1.0,
+        "statement": "Expose click analytics for a short link.",
+        "summary": "Make links better by exposing click analytics: total clicks, last access, top referrers, and clicks per day.",
+        "testable": true,
+        "title": "Explain how links perform"
+      },
+      {
+        "acceptance": [
+          "POST /api/v1/urls accepts an alias and GET /{code} redirects for that alias."
+        ],
+        "breaking": false,
+        "fits_existing_code": true,
+        "id": "aliases",
+        "risk": "low",
+        "scope": "medium",
+        "score": 0.9,
+        "statement": "Accept an optional custom alias when creating a short link.",
+        "summary": "Make links better by allowing a custom alias on create, with reserved-word and collision checks.",
+        "testable": true,
+        "title": "Let people choose readable aliases"
+      },
+      {
+        "acceptance": [
+          "A retention policy updates links that were created without an expiration."
+        ],
+        "breaking": true,
+        "fits_existing_code": false,
+        "id": "auto_expire_all",
+        "risk": "high",
+        "scope": "wide",
+        "score": 0.25,
+        "statement": "Automatically expire every existing link after 7 days.",
+        "summary": "Make links better by force-expiring every existing link after 7 days, including links that were created without a TTL.",
+        "testable": true,
+        "title": "Expire every existing link"
+      }
+    ],
+    "is_ambiguous": true,
+    "signals": [
+      "vague_language:better",
+      "no_concrete_acceptance_or_contract",
+      "very_short",
+      "no_structured_requirements"
+    ],
+    "word_count": 3
+  },
+  "breaking": false,
+  "constraints": [],
+  "decision": {
+    "actor": "demo_policy",
+    "id": "dec_a4990877e1",
+    "rationale": "Selected 'analytics' with score 1.0. Rule: highest rubric score, then lexical id. Ranking: analytics=1.0, aliases=0.9, auto_expire_all=0.25. Non-breaking, testable, low-risk, in-codebase, and narrow scope score higher. Demo mode records this choice so the run can continue. A supervised run pauses until a person picks an interpretation.",
+    "rule": "max_rubric_score_then_lexical_id",
+    "selected": "analytics"
+  },
+  "functional_requirements": [
+    {
+      "acceptance": [
+        "GET /api/v1/urls/{code}/stats returns total clicks, last access, top referrers, and clicks per day."
+      ],
+      "id": "FR-1",
+      "statement": "Expose click analytics for a short link."
+    }
+  ],
+  "kind": "ambiguous",
+  "out_of_scope": [],
+  "problem_statement": "Make links better by exposing click analytics: total clicks, last access, top referrers, and clicks per day.",
+  "selected_interpretation": "analytics",
+  "title": "make links better"
+}

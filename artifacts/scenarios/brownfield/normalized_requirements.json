@@ -1,0 +1,50 @@
+{
+  "actors": [
+    "client application",
+    "link recipient",
+    "operator"
+  ],
+  "ambiguity": {
+    "interpretations": [],
+    "is_ambiguous": false,
+    "signals": [],
+    "word_count": 144
+  },
+  "breaking": false,
+  "constraints": [
+    "Existing links with no alias and no expiry keep redirecting.",
+    "Soft-delete with DELETE /api/v1/urls/{code} stays independent of expiry.",
+    "Include an impact analysis of modules, APIs, and data flow."
+  ],
+  "decision": null,
+  "functional_requirements": [
+    {
+      "acceptance": [
+        "reserved aliases are rejected and a colliding alias returns 409."
+      ],
+      "id": "FR-1",
+      "statement": "Accept an optional alias on POST /api/v1/urls."
+    },
+    {
+      "acceptance": [
+        "ttl_seconds or expires_at is stored, and GET /{code} returns 410 after the link is expired."
+      ],
+      "id": "FR-2",
+      "statement": "Accept an optional expiration on POST /api/v1/urls."
+    },
+    {
+      "acceptance": [
+        "clicks recorded before expiry remain in the totals."
+      ],
+      "id": "FR-3",
+      "statement": "Keep analytics available with GET /api/v1/urls/{code}/stats after expiry."
+    }
+  ],
+  "kind": "brownfield",
+  "out_of_scope": [
+    "Backfilling an expiration onto links that were created without one."
+  ],
+  "problem_statement": "The shortener already creates links, redirects them, and records clicks. Add optional custom aliases and optional expiration without changing links that use neither.",
+  "selected_interpretation": null,
+  "title": "Custom aliases and expiration"
+}

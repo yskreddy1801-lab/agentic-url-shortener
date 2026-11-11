@@ -1,0 +1,79 @@
+{
+  "approval_mode": "demo",
+  "checklist": [
+    {
+      "evidence": "normalized_requirements",
+      "item": "Requirements normalized",
+      "note": "",
+      "status": "pass"
+    },
+    {
+      "evidence": "dec_a4990877e1",
+      "item": "Ambiguity resolved with a recorded decision",
+      "note": "Selected 'analytics' with score 1.0. Rule: highest rubric score, then lexical id. Ranking: analytics=1.0, aliases=0.9, auto_expire_all=0.25. Non-breaking, testable, low-risk, in-codebase, and narrow scope score higher. Demo mode records this choice so the run can continue. A supervised run pauses until a person picks an interpretation.",
+      "status": "pass"
+    },
+    {
+      "evidence": "design",
+      "item": "Architecture and design written",
+      "note": "",
+      "status": "pass"
+    },
+    {
+      "evidence": "implementation_report",
+      "item": "Implementation mapped onto the repository",
+      "note": "",
+      "status": "pass"
+    },
+    {
+      "evidence": "test_report",
+      "item": "Behavioral test suite passed",
+      "note": "",
+      "status": "pass"
+    },
+    {
+      "evidence": "",
+      "item": "Shortener contract tokens present in the test suite",
+      "note": "",
+      "status": "pass"
+    },
+    {
+      "evidence": "docs_snippet",
+      "item": "Documentation snippet produced",
+      "note": "",
+      "status": "pass"
+    },
+    {
+      "evidence": "security_review",
+      "item": "Security policy clear of blocking findings",
+      "note": "",
+      "status": "pass"
+    },
+    {
+      "evidence": "",
+      "item": "Breaking-change control",
+      "note": "No breaking changes were declared.",
+      "status": "pass"
+    },
+    {
+      "evidence": "dec_79238b1e79",
+      "item": "Release checkpoint approved",
+      "note": "Approved by demo_policy after the pre-approval checkpoint. Supervised mode would wait for a person. Demo mode records the pre-approval checkpoint and then auto-approves so a CLI run can finish. This is not a human release sign-off.",
+      "status": "pass"
+    }
+  ],
+  "kind": "ambiguous",
+  "production_gaps": [
+    "SQLite and the in-memory rate limiter are process-local.",
+    "Create, stats, and delete are unauthenticated. A custom alias is a guessable capability.",
+    "The orchestrator runs in-process. It is not an isolated worker fleet.",
+    "The implementation stage verifies the repository. It does not rewrite or merge code.",
+    "The testing stage runs a fixed suite. It does not generate new tests from acceptance text.",
+    "Demo approval is recorded in the audit log. It is not a production change-management control.",
+    "Click analytics stores referrers with no retention window."
+  ],
+  "ready": true,
+  "recommendation": "accept_for_prototype_with_known_limits",
+  "scenario": "ambiguous",
+  "selected_interpretation": "analytics"
+}

@@ -1,0 +1,20 @@
+{
+  "gaps": [],
+  "note": "This stage checks that each requirement names a route or symbol present in the tree. Behavioral proof is the testing stage, which executes the shortener suite.",
+  "requirements": [
+    {
+      "evidence": [
+        {
+          "method": "GET",
+          "path": "/api/v1/urls/{code}/stats",
+          "type": "route"
+        }
+      ],
+      "id": "FR-1",
+      "statement": "Expose click analytics for a short link.",
+      "status": "satisfied"
+    }
+  ],
+  "route_count": 8,
+  "verified": true
+}
