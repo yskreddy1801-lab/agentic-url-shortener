@@ -10,6 +10,7 @@ from typing import Any, Callable
 
 from orchestrator.ambiguity import choose_by_rubric
 from orchestrator.context import RunContext
+from orchestrator.planner import mark_tasks
 from orchestrator.errors import GateFailure, OrchestratorError, PolicyViolation, StageFailed, WorkflowPaused
 from orchestrator.gates import resolve_gate
 from orchestrator.graph import Graph, StageSpec
@@ -105,12 +106,29 @@ class Engine:
     def _dispatch(self, run_id: str, runnable: list[StageSpec]) -> None:
         if len(runnable) == 1:
             self._run_stage(run_id, runnable[0])
+        else:
+            with ThreadPoolExecutor(max_workers=len(runnable)) as pool:
+                futures = [pool.submit(self._run_stage, run_id, spec) for spec in runnable]
+                wait(futures)
+                for future in futures:
+                    future.result()
+        for spec in runnable:
+            self._sync_tasks(run_id, spec.id)
+
+    def _sync_tasks(self, run_id: str, stage_id: str) -> None:
+        row = self.store.get_artifact(run_id, "task_plan")
+        if row is None:
             return
-        with ThreadPoolExecutor(max_workers=len(runnable)) as pool:
-            futures = [pool.submit(self._run_stage, run_id, spec) for spec in runnable]
-            wait(futures)
-            for future in futures:
-                future.result()
+        state = self.store.get_stages(run_id).get(stage_id) or {}
+        if state.get("status") in SUCCESS:
+            target = "succeeded"
+        elif state.get("status") == "failed":
+            target = "failed"
+        else:
+            return
+        plan = row["content"]
+        if mark_tasks(plan, stage_id, target):
+            self.write_artifact(run_id, stage_id, "task_plan", plan)
 
     def _ready(self, run_id: str) -> list[StageSpec]:
         states = self.store.get_stages(run_id)
@@ -181,6 +199,47 @@ class Engine:
         )
         self.store.add_event(run_id, "run.paused", spec.id, {"kind": "approval"})
         return False
+
+    def request_approval(self, run_id: str, stage_id: str, prompt: str) -> dict:
+        existing = self.store.find_decision(run_id, stage_id, "approval")
+        if existing and existing["selected"] == "approved":
+            return existing
+        self.checkpoint(run_id, f"pre_approval:{stage_id}")
+        self.store.add_event(run_id, "approval.requested", stage_id, {"kind": "approval", "prompt": prompt})
+        run = self.store.get_run(run_id)
+        if run["mode"] == "demo":
+            decision = self.store.add_decision(
+                run_id=run_id,
+                stage_id=stage_id,
+                kind="approval",
+                question=prompt,
+                alternatives=[{"id": "approved", "title": "Approve"}, {"id": "rejected", "title": "Reject"}],
+                selected="approved",
+                actor="demo_policy",
+                rationale=(
+                    "Demo mode records the pre-apply checkpoint and then auto-approves "
+                    "so the generated patch can be written into the run workspace. "
+                    "This is not a human sign-off."
+                ),
+                rule="demo_auto_approve",
+                payload={"accept_breaking": False, "note": "demo auto-approve"},
+            )
+            self.store.add_event(
+                run_id,
+                "approval.granted",
+                stage_id,
+                {"actor": "demo_policy", "decision_id": decision["id"], "accept_breaking": False},
+            )
+            return decision
+        self.store.update_run(
+            run_id,
+            status="paused",
+            pause_stage=stage_id,
+            pause_kind="approval",
+            pause_details={"question": prompt, "stage_id": stage_id},
+        )
+        self.store.add_event(run_id, "run.paused", stage_id, {"kind": "approval"})
+        raise WorkflowPaused("approval", prompt)
 
     def _run_stage(self, run_id: str, spec: StageSpec) -> None:
         try:

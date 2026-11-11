@@ -1,0 +1,13 @@
+{
+  "applied": true,
+  "files": [
+    "src/shortener/bulk.py",
+    "src/shortener/bulk_api.py",
+    "src/shortener/app.py",
+    "tests/test_bulk_create.py"
+  ],
+  "main_tree_modified": false,
+  "patch_id": "patch-bulk-create",
+  "summary": "Add POST /api/v1/urls/bulk, a service function, app wiring, and a test.",
+  "workspace": "/workspace/artifacts/workspaces/run_a26b7a4852f2"
+}

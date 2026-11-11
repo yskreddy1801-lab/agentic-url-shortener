@@ -15,6 +15,7 @@ def compute_metrics(store, run_id: str) -> dict:
     stage_count = len(stages) or 1
     succeeded = sum(1 for stage in stages.values() if stage["status"] in SUCCESS)
     timings = _stage_timings(attempts)
+    task_plan = _task_metrics(store, run_id)
     return {
         "run_id": run_id,
         "scenario": run["scenario"],
@@ -33,12 +34,29 @@ def compute_metrics(store, run_id: str) -> dict:
         "end_to_end_latency_ms": _millis(run["started_at"], run["finished_at"]),
         "mttr_ms": _mttr(attempts),
         "parallelism_max": _parallelism(attempts),
+        "tasks_total": task_plan["tasks_total"],
+        "tasks_succeeded": task_plan["tasks_succeeded"],
+        "tasks_pending": task_plan["tasks_pending"],
+        "tasks_failed": task_plan["tasks_failed"],
+        "task_ids": task_plan["task_ids"],
         "definitions": {
             "stage_success_rate": "Stages in a success status divided by stages in the graph. Pending and failed stages count against the rate.",
             "mttr_ms": "Mean time from the first failed attempt of a stage to a later successful attempt in the same run. Null when no stage recovered.",
             "end_to_end_latency_ms": "Run start to the timestamp recorded when the run left the executing state. Null while still running or paused.",
             "parallelism_max": "Peak number of stage attempts whose start/finish intervals overlap.",
         },
+    }
+
+
+def _task_metrics(store, run_id: str) -> dict:
+    row = store.get_artifact(run_id, "task_plan")
+    tasks = (row or {}).get("content", {}).get("tasks", []) if row else []
+    return {
+        "tasks_total": len(tasks),
+        "tasks_succeeded": sum(1 for task in tasks if task.get("status") == "succeeded"),
+        "tasks_pending": sum(1 for task in tasks if task.get("status") == "pending"),
+        "tasks_failed": sum(1 for task in tasks if task.get("status") == "failed"),
+        "task_ids": [task.get("id") for task in tasks],
     }
 
 

@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from orchestrator.errors import GateFailure, PolicyViolation
-from orchestrator.policies import scan_artifacts
+from pathlib import Path
+
+from orchestrator.policies import evaluate_compliance, scan_artifacts
 
 
 def resolve_gate(name: str):
@@ -54,9 +56,24 @@ def gate_policy_clear(ctx) -> None:
         raise PolicyViolation(blocking[0]["message"], findings=blocking)
 
 
+def gate_compliance_controls(ctx) -> None:
+    report = evaluate_compliance(_compliance_root(ctx))
+    if not report["ok"]:
+        raise PolicyViolation(report["findings"][0]["message"], findings=report["findings"])
+
+
+def _compliance_root(ctx) -> Path:
+    applied = ctx.artifact("apply_report") or {}
+    workspace = applied.get("workspace")
+    if workspace:
+        return Path(workspace)
+    return Path(ctx.repo_root)
+
+
 GATES = {
     "brief_present": gate_brief_present,
     "ambiguity_resolved": gate_ambiguity_resolved,
     "tests_green": gate_tests_green,
     "policy_clear": gate_policy_clear,
+    "compliance_controls": gate_compliance_controls,
 }

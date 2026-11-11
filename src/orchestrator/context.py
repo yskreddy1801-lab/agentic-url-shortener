@@ -49,3 +49,6 @@ class RunContext:
 
     def resolve_choice(self, *, question: str, alternatives: list[dict], kind: str = "ambiguity") -> dict:
         return self.engine.resolve_choice(self.run_id, self.stage_id, question, alternatives, kind)
+
+    def request_approval(self, prompt: str) -> dict:
+        return self.engine.request_approval(self.run_id, self.stage_id, prompt)

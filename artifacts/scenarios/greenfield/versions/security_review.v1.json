@@ -3,6 +3,18 @@
   "breaking_changes": [],
   "findings": [
     {
+      "classification": {
+        "clicks.clicked_at": "operational",
+        "clicks.referrer": "confidential_telemetry",
+        "referrer_rule": "Query strings and fragments are stripped. Email-bearing referrers are stored as a hash.",
+        "retention": "Clicks are purged through POST /api/v1/compliance/purge using click_retention_days.",
+        "short_links.target_url": "customer_content"
+      },
+      "message": "Query strings and fragments are stripped. Email-bearing referrers are stored as a hash.",
+      "policy": "data_classification",
+      "severity": "info"
+    },
+    {
       "message": "Redirecting a browser to a caller-supplied http(s) URL is the product. The javascript scheme, data, file, and embedded credentials are rejected at create time.",
       "policy": "open_redirect_is_the_product",
       "severity": "info"

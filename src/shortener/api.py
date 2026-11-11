@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from sqlalchemy import text
 
 from shortener import service
+from shortener.compliance import DATA_CLASSIFICATION, purge_clicks
 from shortener.errors import AppError
 from shortener.schemas import CreateLinkIn, CreateLinkOut, LinkOut, StatsOut
 
@@ -130,6 +131,18 @@ def get_stats(code: str, request: Request):
         "last_access": stats["last_access"],
         "top_referrers": stats["top_referrers"],
         "clicks_per_day": stats["clicks_per_day"],
+    }
+
+
+@api_router.post("/api/v1/compliance/purge")
+def purge_stored_clicks(request: Request):
+    retention_days = request.app.state.settings.click_retention_days
+    with _session(request) as session:
+        removed = purge_clicks(session, now=_now(request), retention_days=retention_days)
+    return {
+        "purged": removed,
+        "retention_days": retention_days,
+        "classification": DATA_CLASSIFICATION,
     }
 
 

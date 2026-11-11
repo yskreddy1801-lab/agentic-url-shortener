@@ -64,3 +64,55 @@ def _unsafe_token(token: str) -> bool:
     parts = urlsplit(token)
     scheme = parts.scheme.lower()
     return scheme in _BLOCKED_SCHEMES
+
+
+def evaluate_compliance(root) -> dict:
+    """Read the service tree and require retention, purge, and referrer sanitizing.
+
+    `root` is a pathlib.Path of a checkout or a run workspace.
+    """
+    from pathlib import Path
+
+    root = Path(root)
+    texts = {
+        "compliance": _read(root / "src/shortener/compliance.py"),
+        "service": _read(root / "src/shortener/service.py"),
+        "api": _read(root / "src/shortener/api.py"),
+        "config": _read(root / "src/shortener/config.py"),
+    }
+    checks = [
+        ("referrer_sanitized", "def sanitize_referrer" in texts["compliance"], "sanitize_referrer is missing"),
+        ("referrer_used_on_write", "sanitize_referrer" in texts["service"], "record_click does not sanitize the referrer"),
+        ("retention_purge", "def purge_clicks" in texts["compliance"], "purge_clicks is missing"),
+        ("purge_endpoint", "/api/v1/compliance/purge" in texts["api"], "POST /api/v1/compliance/purge is missing"),
+        ("retention_window", "click_retention_days" in texts["config"], "click_retention_days is not configurable"),
+    ]
+    findings = []
+    for policy, ok, message in checks:
+        if not ok:
+            findings.append(
+                {
+                    "severity": "block",
+                    "policy": policy,
+                    "artifact": "source",
+                    "message": message,
+                }
+            )
+    classification = {
+        "short_links.target_url": "customer_content",
+        "clicks.clicked_at": "operational",
+        "clicks.referrer": "confidential_telemetry",
+        "retention": "Clicks are purged through POST /api/v1/compliance/purge using click_retention_days.",
+        "referrer_rule": "Query strings and fragments are stripped. Email-bearing referrers are stored as a hash.",
+    }
+    return {
+        "ok": not findings,
+        "findings": findings,
+        "classification": classification,
+    }
+
+
+def _read(path) -> str:
+    if not path.is_file():
+        return ""
+    return path.read_text(encoding="utf-8")

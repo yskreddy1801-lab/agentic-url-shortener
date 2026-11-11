@@ -1,5 +1,5 @@
 {
-  "approval_count": 1,
+  "approval_count": 2,
   "decision_count": 0,
   "definitions": {
     "end_to_end_latency_ms": "Run start to the timestamp recorded when the run left the executing state. Null while still running or paused.",
@@ -7,27 +7,43 @@
     "parallelism_max": "Peak number of stage attempts whose start/finish intervals overlap.",
     "stage_success_rate": "Stages in a success status divided by stages in the graph. Pending and failed stages count against the rate."
   },
-  "end_to_end_latency_ms": 1245,
+  "end_to_end_latency_ms": 1724,
   "fallback_count": 0,
   "mode": "demo",
   "mttr_ms": null,
-  "parallelism_max": 3,
+  "parallelism_max": 2,
   "policy_violation_count": 0,
   "retry_count": 0,
   "rollback_count": 0,
-  "run_id": "run_7a9e509fe601",
+  "run_id": "run_a26b7a4852f2",
   "scenario": "brownfield",
-  "stage_count": 7,
+  "stage_count": 9,
   "stage_success_rate": 1.0,
   "stage_timings_ms": {
+    "apply_patch": 15,
     "architecture": 12,
-    "documentation": 19,
+    "documentation": 16,
     "implementation": 14,
-    "release_readiness": 17,
-    "requirements": 9,
-    "security_review": 23,
-    "testing": 1126
+    "planning": 5,
+    "release_readiness": 18,
+    "requirements": 7,
+    "security_review": 37,
+    "testing": 1530
   },
-  "stages_succeeded": 7,
-  "status": "succeeded"
+  "stages_succeeded": 9,
+  "status": "succeeded",
+  "task_ids": [
+    "PLAN-1",
+    "FR-1-design",
+    "FR-1-implement",
+    "FR-1-test",
+    "FR-1-document",
+    "APPLY-1",
+    "SEC-1",
+    "REL-1"
+  ],
+  "tasks_failed": 0,
+  "tasks_pending": 0,
+  "tasks_succeeded": 8,
+  "tasks_total": 8
 }

@@ -1,0 +1,167 @@
+{
+  "edges": [
+    {
+      "from": "FR-1-design",
+      "to": "FR-1-implement"
+    },
+    {
+      "from": "FR-1-implement",
+      "to": "FR-1-test"
+    },
+    {
+      "from": "FR-1-implement",
+      "to": "FR-1-document"
+    },
+    {
+      "from": "FR-1-implement",
+      "to": "APPLY-1"
+    },
+    {
+      "from": "FR-1-test",
+      "to": "SEC-1"
+    },
+    {
+      "from": "SEC-1",
+      "to": "REL-1"
+    },
+    {
+      "from": "FR-1-document",
+      "to": "REL-1"
+    }
+  ],
+  "kind": "brownfield",
+  "markdown": "# Bulk link creation\n\n| Task | Stage | Depends on | Status |\n| --- | --- | --- | --- |\n| `PLAN-1` Publish the task subgraph for this brief | planning | - | succeeded |\n| `FR-1-design` Design FR-1: Create many links in one call with POST /api/v1/urls/bulk. | architecture | - | succeeded |\n| `FR-1-implement` Implement FR-1 | implementation | FR-1-design | succeeded |\n| `FR-1-test` Test FR-1 | testing | FR-1-implement | succeeded |\n| `FR-1-document` Document FR-1 | documentation | FR-1-implement | succeeded |\n| `APPLY-1` Apply the generated patch inside the run workspace | apply_patch | FR-1-implement | succeeded |\n| `SEC-1` Security and compliance review | security_review | FR-1-test | pending |\n| `REL-1` Release readiness | release_readiness | SEC-1, FR-1-document | pending |\n",
+  "tasks": [
+    {
+      "depends_on": [],
+      "id": "PLAN-1",
+      "inputs": [
+        "normalized_requirements"
+      ],
+      "outputs": [
+        "task_plan"
+      ],
+      "owning_stage": "planning",
+      "requirement_id": null,
+      "status": "succeeded",
+      "title": "Publish the task subgraph for this brief"
+    },
+    {
+      "depends_on": [],
+      "id": "FR-1-design",
+      "inputs": [
+        "normalized_requirements"
+      ],
+      "outputs": [
+        "design"
+      ],
+      "owning_stage": "architecture",
+      "requirement_id": "FR-1",
+      "status": "succeeded",
+      "title": "Design FR-1: Create many links in one call with POST /api/v1/urls/bulk."
+    },
+    {
+      "depends_on": [
+        "FR-1-design"
+      ],
+      "id": "FR-1-implement",
+      "inputs": [
+        "design"
+      ],
+      "outputs": [
+        "code_patch",
+        "implementation_report"
+      ],
+      "owning_stage": "implementation",
+      "requirement_id": "FR-1",
+      "status": "succeeded",
+      "title": "Implement FR-1"
+    },
+    {
+      "depends_on": [
+        "FR-1-implement"
+      ],
+      "id": "FR-1-test",
+      "inputs": [
+        "implementation_report"
+      ],
+      "outputs": [
+        "test_report"
+      ],
+      "owning_stage": "testing",
+      "requirement_id": "FR-1",
+      "status": "succeeded",
+      "title": "Test FR-1"
+    },
+    {
+      "depends_on": [
+        "FR-1-implement"
+      ],
+      "id": "FR-1-document",
+      "inputs": [
+        "design",
+        "implementation_report"
+      ],
+      "outputs": [
+        "docs_snippet"
+      ],
+      "owning_stage": "documentation",
+      "requirement_id": "FR-1",
+      "status": "succeeded",
+      "title": "Document FR-1"
+    },
+    {
+      "depends_on": [
+        "FR-1-implement"
+      ],
+      "id": "APPLY-1",
+      "inputs": [
+        "code_patch"
+      ],
+      "outputs": [
+        "apply_report"
+      ],
+      "owning_stage": "apply_patch",
+      "requirement_id": null,
+      "status": "succeeded",
+      "title": "Apply the generated patch inside the run workspace"
+    },
+    {
+      "depends_on": [
+        "FR-1-test"
+      ],
+      "id": "SEC-1",
+      "inputs": [
+        "implementation_report",
+        "apply_report"
+      ],
+      "outputs": [
+        "security_review"
+      ],
+      "owning_stage": "security_review",
+      "requirement_id": null,
+      "status": "pending",
+      "title": "Security and compliance review"
+    },
+    {
+      "depends_on": [
+        "SEC-1",
+        "FR-1-document"
+      ],
+      "id": "REL-1",
+      "inputs": [
+        "test_report",
+        "docs_snippet",
+        "security_review"
+      ],
+      "outputs": [
+        "release_report"
+      ],
+      "owning_stage": "release_readiness",
+      "requirement_id": null,
+      "status": "pending",
+      "title": "Release readiness"
+    }
+  ],
+  "title": "Bulk link creation"
+}

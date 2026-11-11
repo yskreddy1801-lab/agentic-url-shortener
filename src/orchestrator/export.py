@@ -41,6 +41,7 @@ def export_run(store, run_id: str, dest: Path) -> Path:
             }
             for row in store.list_artifacts(run_id)
         ],
+        "task_plan": _task_lineage(store, run_id),
     }
     (dest / "lineage.json").write_text(json.dumps(lineage, indent=2, sort_keys=True), encoding="utf-8")
     metrics = compute_metrics(store, run_id)
@@ -49,6 +50,27 @@ def export_run(store, run_id: str, dest: Path) -> Path:
     (dest / "run.json").write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
     (dest / "brief.md").write_text(run["brief"], encoding="utf-8")
     return dest
+
+
+def _task_lineage(store, run_id: str) -> dict:
+    row = store.get_artifact(run_id, "task_plan")
+    if row is None:
+        return {"tasks": [], "edges": []}
+    content = row["content"]
+    return {
+        "tasks": [
+            {
+                "id": task["id"],
+                "owning_stage": task["owning_stage"],
+                "depends_on": task["depends_on"],
+                "status": task["status"],
+                "inputs": task["inputs"],
+                "outputs": task["outputs"],
+            }
+            for task in content.get("tasks") or []
+        ],
+        "edges": content.get("edges") or [],
+    }
 
 
 def _write_version(folder: Path, artifact: dict) -> None:
@@ -63,6 +85,14 @@ def _write_version(folder: Path, artifact: dict) -> None:
 def _write_current(folder: Path, artifact: dict) -> None:
     name = artifact["name"]
     content = artifact["content"]
+    if name == "task_plan" and isinstance(content, dict) and content.get("markdown"):
+        (folder / "task_plan.json").write_text(json.dumps(content, indent=2, sort_keys=True), encoding="utf-8")
+        (folder / "task_plan.md").write_text(content["markdown"], encoding="utf-8")
+        return
+    if name == "code_patch" and isinstance(content, dict):
+        (folder / "code_patch.json").write_text(json.dumps(content, indent=2, sort_keys=True), encoding="utf-8")
+        (folder / "code_patch.diff").write_text(content.get("diff") or "", encoding="utf-8")
+        return
     if name == "design" and isinstance(content, dict) and content.get("markdown"):
         (folder / "design.json").write_text(json.dumps(content, indent=2, sort_keys=True), encoding="utf-8")
         (folder / "design.md").write_text(content["markdown"], encoding="utf-8")

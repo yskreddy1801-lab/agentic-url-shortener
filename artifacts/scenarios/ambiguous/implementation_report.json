@@ -1,6 +1,9 @@
 {
   "gaps": [],
-  "note": "This stage checks that each requirement names a route or symbol present in the tree. Behavioral proof is the testing stage, which executes the shortener suite.",
+  "generated": false,
+  "missing_routes": [],
+  "note": "Routes that already exist are evidence. Missing routes become a generated patch when a deterministic template exists. Tests then run against the run workspace.",
+  "patch_id": null,
   "requirements": [
     {
       "evidence": [
@@ -15,6 +18,6 @@
       "status": "satisfied"
     }
   ],
-  "route_count": 8,
+  "route_count": 9,
   "verified": true
 }

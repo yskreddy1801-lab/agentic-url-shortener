@@ -38,7 +38,7 @@ curl -s -D - -o /dev/null http://127.0.0.1:8741/launch
 curl -s http://127.0.0.1:8741/api/v1/urls/launch/stats
 ```
 
-`SHORTENER_DATABASE_URL` and `ORCHESTRATOR_DATABASE_URL` override the default SQLite files under `data/`. `BASE_URL` is the prefix used in `short_url` (default `http://127.0.0.1:8741`). `RATE_LIMIT_CREATES` defaults to 60 creates per 60 seconds per client address.
+`SHORTENER_DATABASE_URL` and `ORCHESTRATOR_DATABASE_URL` override the default SQLite files under `data/`. `BASE_URL` is the prefix used in `short_url` (default `http://127.0.0.1:8741`). `RATE_LIMIT_CREATES` defaults to 60 creates per 60 seconds per client address. `CLICK_RETENTION_DAYS` defaults to 30. `POST /api/v1/compliance/purge` deletes older clicks. Referrers are stored without query strings; an email-bearing referrer is stored as a hash.
 
 ## Run the tests
 
@@ -46,7 +46,7 @@ curl -s http://127.0.0.1:8741/api/v1/urls/launch/stats
 pytest
 ```
 
-The suite covers create, redirect, stats, expiry, delete, validation, and the orchestrator (graph order, parallel barrier, retry, fallback, rollback, safe-stop, demo auto-approve versus a real pause, policy block, re-plan, and ambiguous-requirement lineage).
+The suite covers create, redirect, stats, expiry, delete, referrer sanitizing, click purge, validation, code generation, task plans, and the orchestrator (graph order, parallel barrier, retry, fallback, rollback, safe-stop, demo auto-approve versus a real pause, policy block, re-plan, and ambiguous-requirement lineage).
 
 ## Run the three scenarios
 
@@ -67,6 +67,8 @@ python -m orchestrator run ambiguous --mode demo
 ```bash
 python -m orchestrator run ambiguous --mode supervised
 python -m orchestrator approve RUN_ID --stage requirements --alternative analytics --note "Ship analytics"
+python -m orchestrator run brownfield --mode supervised
+python -m orchestrator approve RUN_ID --stage apply_patch --note "Apply the bulk-create patch in the run workspace"
 python -m orchestrator approve RUN_ID --stage release_readiness --note "Prototype scope accepted"
 ```
 

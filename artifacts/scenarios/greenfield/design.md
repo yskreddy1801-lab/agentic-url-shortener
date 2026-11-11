@@ -40,7 +40,7 @@ Clients need a durable short link for an http or https URL. A recipient follows 
 - **Non-sequential codes from a CSPRNG alphabet.** A counter leaks volume and lets neighbors guess nearby links.
 - **Soft delete.** Metadata and stats stay explainable after a link is turned off.
 - **Idempotency-Key compares a hash of the request, not of the derived expiry instant.** A replay must return the original row. Recomputing ttl from 'now' would mint a second link.
-- **The implementation stage verifies the repository and does not rewrite it.** Code changes stay in reviewable commits. The workflow proves the tree matches the requirements.
+- **Generated patches land in the run workspace, not in the main checkout.** A missing route becomes a unified diff and new files. Applying them requires approval. The main tree stays clean.
 
 ## Failure modes
 

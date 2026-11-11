@@ -1,7 +1,21 @@
 {
   "artifacts": [
     {
-      "hash": "90a345c76c0178ea68af98980bad645fb6ba308032403615e457d97df31f3dca",
+      "hash": "aa6339cf35a57e343e8e474be314ef8678dac0f1e055e9a660a7f4b865ea5533",
+      "is_current": true,
+      "name": "apply_report",
+      "stage_id": "apply_patch",
+      "version": 1
+    },
+    {
+      "hash": "c37c3e864e973bd12905d3e7896f6d1e12e4410cc3a54c91c8ac102352ea034b",
+      "is_current": true,
+      "name": "code_patch",
+      "stage_id": "implementation",
+      "version": 1
+    },
+    {
+      "hash": "ab8fb91f4857fcb2dbf2b2aef6e91ad29a7f5f40e211bc74da688d4d6fdf68b1",
       "is_current": true,
       "name": "design",
       "stage_id": "architecture",
@@ -15,7 +29,7 @@
       "version": 1
     },
     {
-      "hash": "d788a87f5a4c54b5a470ddf358a6d817148595b33d4d48d4d2f8fd970a62bca1",
+      "hash": "f6f3272779a359f56e973dc44ea1cda0c1d9d52baab6b1746bdc9c6858810b54",
       "is_current": true,
       "name": "implementation_report",
       "stage_id": "implementation",
@@ -29,28 +43,91 @@
       "version": 1
     },
     {
-      "hash": "7f9ace11d0d888c8ad6320882b7a982668e0bca270b90b7b3479e2a3ae429010",
+      "hash": "c73a0149cb4c6ff21079d9965fbdfc11cb2f1ff1da2b307eb6ca5b87e5c9201c",
       "is_current": true,
       "name": "release_checklist",
       "stage_id": "release_readiness",
       "version": 1
     },
     {
-      "hash": "00694a14008c3fa83eb95e508dac476ec6f8e7c7f6dc54777fd69912be5bb3aa",
+      "hash": "6cd556390f35b7c3cb07e6db2463f212849c12e93f64559d3acd38574d134734",
       "is_current": true,
       "name": "release_report",
       "stage_id": "release_readiness",
       "version": 1
     },
     {
-      "hash": "072de968941e5d1ef2a9e265328a8567a751597376ee1d3992834a9e05ac8e6c",
+      "hash": "f7ad8672d7c3af0dab592fb83b3b949f91c5e3b9f7fad440552b949c6a85d29f",
       "is_current": true,
       "name": "security_review",
       "stage_id": "security_review",
       "version": 1
     },
     {
-      "hash": "9fe4dca7fb5548883469d1a52f639ff406252a49b2e7a2971529f55c4de82d9a",
+      "hash": "c0c6413cb1ac57db7264248a21bd3fc093a2c706ce9c8c913390bdca48053c71",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "planning",
+      "version": 1
+    },
+    {
+      "hash": "c6f5a28ffe847e295cc5484a0f6e5a0ce266e533eb0d10a5961f945550f61d39",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "planning",
+      "version": 2
+    },
+    {
+      "hash": "739ed305728097c56ae116e25dc2baf7b7544bf19ba30e75f51162cd0604b527",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "architecture",
+      "version": 3
+    },
+    {
+      "hash": "898e6f690b2dcb23cc47b562dc289fdf1c069456d9c6a221dca8089794b6e0a0",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "implementation",
+      "version": 4
+    },
+    {
+      "hash": "4c35cc3edf9535653976d610f46e260d563837d3b79c663ed87d3347246322af",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "apply_patch",
+      "version": 5
+    },
+    {
+      "hash": "601d1b24cc0ef517d2343f2f626e88868f01573343d662e73ac8fd5c1af09cf6",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "testing",
+      "version": 6
+    },
+    {
+      "hash": "d30b89043c683954b66d402d4c0eb0ed0cd45d83cc926927911f13adc84ca738",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "documentation",
+      "version": 7
+    },
+    {
+      "hash": "5b6a963ddaa3b2c6b4b610e4dab5fc768cf7b0107c18fdc0cf931cefee9208a9",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "security_review",
+      "version": 8
+    },
+    {
+      "hash": "82f3ab90499b77bcb710018a87c5a4427c21b9666fd4a6bdc81182321b82730d",
+      "is_current": true,
+      "name": "task_plan",
+      "stage_id": "release_readiness",
+      "version": 9
+    },
+    {
+      "hash": "500f55be64fa23bf5757e079566c4080f867fcd11cf8f0d8e4c3a37b63875046",
       "is_current": true,
       "name": "test_report",
       "stage_id": "testing",
@@ -59,48 +136,63 @@
   ],
   "checkpoints": [
     {
-      "created_at": "2026-11-06T17:39:19.462316+00:00",
-      "id": "ckpt_27ce6fe016",
+      "created_at": "2026-11-11T15:47:41.974782+00:00",
+      "id": "ckpt_8103013c48",
       "label": "init"
     },
     {
-      "created_at": "2026-11-06T17:39:19.492067+00:00",
-      "id": "ckpt_530dbf6aed",
+      "created_at": "2026-11-11T15:47:41.999614+00:00",
+      "id": "ckpt_0a736b7b8b",
       "label": "after:requirements"
     },
     {
-      "created_at": "2026-11-06T17:39:19.520218+00:00",
-      "id": "ckpt_204ca2932b",
+      "created_at": "2026-11-11T15:47:42.014555+00:00",
+      "id": "ckpt_aed37a473d",
+      "label": "after:planning"
+    },
+    {
+      "created_at": "2026-11-11T15:47:42.056304+00:00",
+      "id": "ckpt_9c27908d51",
       "label": "after:architecture"
     },
     {
-      "created_at": "2026-11-06T17:39:19.559205+00:00",
-      "id": "ckpt_e1cb531f2c",
+      "created_at": "2026-11-11T15:47:42.082119+00:00",
+      "id": "ckpt_5ba997b58f",
       "label": "after:implementation"
     },
     {
-      "created_at": "2026-11-06T17:39:19.617498+00:00",
-      "id": "ckpt_525058e59e",
-      "label": "after:security_review"
+      "created_at": "2026-11-11T15:47:42.098157+00:00",
+      "id": "ckpt_cae0371032",
+      "label": "pre_approval:apply_patch"
     },
     {
-      "created_at": "2026-11-06T17:39:19.619262+00:00",
-      "id": "ckpt_a388502390",
+      "created_at": "2026-11-11T15:47:42.114938+00:00",
+      "id": "ckpt_d53bb02406",
+      "label": "after:apply_patch"
+    },
+    {
+      "created_at": "2026-11-11T15:47:42.157199+00:00",
+      "id": "ckpt_8dd6286372",
       "label": "after:documentation"
     },
     {
-      "created_at": "2026-11-06T17:39:20.754739+00:00",
-      "id": "ckpt_3d278724c9",
+      "created_at": "2026-11-11T15:47:42.163933+00:00",
+      "id": "ckpt_ec5c233253",
+      "label": "after:security_review"
+    },
+    {
+      "created_at": "2026-11-11T15:47:43.538631+00:00",
+      "id": "ckpt_2191ddaa29",
       "label": "after:testing"
     },
     {
-      "created_at": "2026-11-06T17:39:20.760064+00:00",
-      "id": "ckpt_0ba2742ec9",
+      "created_at": "2026-11-11T15:47:43.557396+00:00",
+      "id": "ckpt_9062c6f647",
       "label": "pre_approval:release_readiness"
     },
     {
-      "created_at": "2026-11-06T17:39:20.796024+00:00",
-      "id": "ckpt_7b344e0349",
+      "created_at": "2026-11-11T15:47:43.589955+00:00",
+      "id": "ckpt_d310df4973",
       "label": "after:release_readiness"
     }
   ],
@@ -117,8 +209,35 @@
           "title": "Reject"
         }
       ],
-      "created_at": "2026-11-06T17:39:20.764395+00:00",
-      "id": "dec_c0ec25a51d",
+      "created_at": "2026-11-11T15:47:42.101335+00:00",
+      "id": "dec_bafc9819c1",
+      "invalidated": false,
+      "kind": "approval",
+      "payload": {
+        "accept_breaking": false,
+        "note": "demo auto-approve"
+      },
+      "question": "Applying a generated patch is a high-impact action. Approve it to write the patch into this run's workspace copy. The main checkout is not modified.",
+      "rationale": "Demo mode records the pre-apply checkpoint and then auto-approves so the generated patch can be written into the run workspace. This is not a human sign-off.",
+      "rule": "demo_auto_approve",
+      "run_id": "run_b759c4745beb",
+      "selected": "approved",
+      "stage_id": "apply_patch"
+    },
+    {
+      "actor": "demo_policy",
+      "alternatives": [
+        {
+          "id": "approved",
+          "title": "Approve"
+        },
+        {
+          "id": "rejected",
+          "title": "Reject"
+        }
+      ],
+      "created_at": "2026-11-11T15:47:43.561215+00:00",
+      "id": "dec_52cca6209b",
       "invalidated": false,
       "kind": "approval",
       "payload": {
@@ -128,10 +247,671 @@
       "question": "Release readiness is a high-impact checkpoint. Approve it to publish the release report.",
       "rationale": "Demo mode records the pre-approval checkpoint and then auto-approves so a CLI run can finish. This is not a human release sign-off.",
       "rule": "demo_auto_approve",
-      "run_id": "run_f66b1788f594",
+      "run_id": "run_b759c4745beb",
       "selected": "approved",
       "stage_id": "release_readiness"
     }
   ],
-  "run_id": "run_f66b1788f594"
+  "run_id": "run_b759c4745beb",
+  "task_plan": {
+    "edges": [
+      {
+        "from": "FR-1-design",
+        "to": "FR-1-implement"
+      },
+      {
+        "from": "FR-1-implement",
+        "to": "FR-1-test"
+      },
+      {
+        "from": "FR-1-implement",
+        "to": "FR-1-document"
+      },
+      {
+        "from": "FR-2-design",
+        "to": "FR-2-implement"
+      },
+      {
+        "from": "FR-2-implement",
+        "to": "FR-2-test"
+      },
+      {
+        "from": "FR-2-implement",
+        "to": "FR-2-document"
+      },
+      {
+        "from": "FR-3-design",
+        "to": "FR-3-implement"
+      },
+      {
+        "from": "FR-2-implement",
+        "to": "FR-3-implement"
+      },
+      {
+        "from": "FR-3-implement",
+        "to": "FR-3-test"
+      },
+      {
+        "from": "FR-3-implement",
+        "to": "FR-3-document"
+      },
+      {
+        "from": "FR-4-design",
+        "to": "FR-4-implement"
+      },
+      {
+        "from": "FR-2-implement",
+        "to": "FR-4-implement"
+      },
+      {
+        "from": "FR-4-implement",
+        "to": "FR-4-test"
+      },
+      {
+        "from": "FR-4-implement",
+        "to": "FR-4-document"
+      },
+      {
+        "from": "FR-5-design",
+        "to": "FR-5-implement"
+      },
+      {
+        "from": "FR-2-implement",
+        "to": "FR-5-implement"
+      },
+      {
+        "from": "FR-5-implement",
+        "to": "FR-5-test"
+      },
+      {
+        "from": "FR-5-implement",
+        "to": "FR-5-document"
+      },
+      {
+        "from": "FR-6-design",
+        "to": "FR-6-implement"
+      },
+      {
+        "from": "FR-6-implement",
+        "to": "FR-6-test"
+      },
+      {
+        "from": "FR-6-implement",
+        "to": "FR-6-document"
+      },
+      {
+        "from": "FR-7-design",
+        "to": "FR-7-implement"
+      },
+      {
+        "from": "FR-7-implement",
+        "to": "FR-7-test"
+      },
+      {
+        "from": "FR-7-implement",
+        "to": "FR-7-document"
+      },
+      {
+        "from": "FR-1-implement",
+        "to": "APPLY-1"
+      },
+      {
+        "from": "FR-2-implement",
+        "to": "APPLY-1"
+      },
+      {
+        "from": "FR-3-implement",
+        "to": "APPLY-1"
+      },
+      {
+        "from": "FR-4-implement",
+        "to": "APPLY-1"
+      },
+      {
+        "from": "FR-5-implement",
+        "to": "APPLY-1"
+      },
+      {
+        "from": "FR-6-implement",
+        "to": "APPLY-1"
+      },
+      {
+        "from": "FR-7-implement",
+        "to": "APPLY-1"
+      },
+      {
+        "from": "FR-1-test",
+        "to": "SEC-1"
+      },
+      {
+        "from": "FR-2-test",
+        "to": "SEC-1"
+      },
+      {
+        "from": "FR-3-test",
+        "to": "SEC-1"
+      },
+      {
+        "from": "FR-4-test",
+        "to": "SEC-1"
+      },
+      {
+        "from": "FR-5-test",
+        "to": "SEC-1"
+      },
+      {
+        "from": "FR-6-test",
+        "to": "SEC-1"
+      },
+      {
+        "from": "FR-7-test",
+        "to": "SEC-1"
+      },
+      {
+        "from": "SEC-1",
+        "to": "REL-1"
+      },
+      {
+        "from": "FR-1-document",
+        "to": "REL-1"
+      },
+      {
+        "from": "FR-2-document",
+        "to": "REL-1"
+      },
+      {
+        "from": "FR-3-document",
+        "to": "REL-1"
+      },
+      {
+        "from": "FR-4-document",
+        "to": "REL-1"
+      },
+      {
+        "from": "FR-5-document",
+        "to": "REL-1"
+      },
+      {
+        "from": "FR-6-document",
+        "to": "REL-1"
+      },
+      {
+        "from": "FR-7-document",
+        "to": "REL-1"
+      }
+    ],
+    "tasks": [
+      {
+        "depends_on": [],
+        "id": "PLAN-1",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "task_plan"
+        ],
+        "owning_stage": "planning",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [],
+        "id": "FR-1-design",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "design"
+        ],
+        "owning_stage": "architecture",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-design"
+        ],
+        "id": "FR-1-implement",
+        "inputs": [
+          "design"
+        ],
+        "outputs": [
+          "code_patch",
+          "implementation_report"
+        ],
+        "owning_stage": "implementation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-implement"
+        ],
+        "id": "FR-1-test",
+        "inputs": [
+          "implementation_report"
+        ],
+        "outputs": [
+          "test_report"
+        ],
+        "owning_stage": "testing",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-implement"
+        ],
+        "id": "FR-1-document",
+        "inputs": [
+          "design",
+          "implementation_report"
+        ],
+        "outputs": [
+          "docs_snippet"
+        ],
+        "owning_stage": "documentation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [],
+        "id": "FR-2-design",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "design"
+        ],
+        "owning_stage": "architecture",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-2-design"
+        ],
+        "id": "FR-2-implement",
+        "inputs": [
+          "design"
+        ],
+        "outputs": [
+          "code_patch",
+          "implementation_report"
+        ],
+        "owning_stage": "implementation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-2-implement"
+        ],
+        "id": "FR-2-test",
+        "inputs": [
+          "implementation_report"
+        ],
+        "outputs": [
+          "test_report"
+        ],
+        "owning_stage": "testing",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-2-implement"
+        ],
+        "id": "FR-2-document",
+        "inputs": [
+          "design",
+          "implementation_report"
+        ],
+        "outputs": [
+          "docs_snippet"
+        ],
+        "owning_stage": "documentation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [],
+        "id": "FR-3-design",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "design"
+        ],
+        "owning_stage": "architecture",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-3-design",
+          "FR-2-implement"
+        ],
+        "id": "FR-3-implement",
+        "inputs": [
+          "design"
+        ],
+        "outputs": [
+          "code_patch",
+          "implementation_report"
+        ],
+        "owning_stage": "implementation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-3-implement"
+        ],
+        "id": "FR-3-test",
+        "inputs": [
+          "implementation_report"
+        ],
+        "outputs": [
+          "test_report"
+        ],
+        "owning_stage": "testing",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-3-implement"
+        ],
+        "id": "FR-3-document",
+        "inputs": [
+          "design",
+          "implementation_report"
+        ],
+        "outputs": [
+          "docs_snippet"
+        ],
+        "owning_stage": "documentation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [],
+        "id": "FR-4-design",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "design"
+        ],
+        "owning_stage": "architecture",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-4-design",
+          "FR-2-implement"
+        ],
+        "id": "FR-4-implement",
+        "inputs": [
+          "design"
+        ],
+        "outputs": [
+          "code_patch",
+          "implementation_report"
+        ],
+        "owning_stage": "implementation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-4-implement"
+        ],
+        "id": "FR-4-test",
+        "inputs": [
+          "implementation_report"
+        ],
+        "outputs": [
+          "test_report"
+        ],
+        "owning_stage": "testing",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-4-implement"
+        ],
+        "id": "FR-4-document",
+        "inputs": [
+          "design",
+          "implementation_report"
+        ],
+        "outputs": [
+          "docs_snippet"
+        ],
+        "owning_stage": "documentation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [],
+        "id": "FR-5-design",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "design"
+        ],
+        "owning_stage": "architecture",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-5-design",
+          "FR-2-implement"
+        ],
+        "id": "FR-5-implement",
+        "inputs": [
+          "design"
+        ],
+        "outputs": [
+          "code_patch",
+          "implementation_report"
+        ],
+        "owning_stage": "implementation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-5-implement"
+        ],
+        "id": "FR-5-test",
+        "inputs": [
+          "implementation_report"
+        ],
+        "outputs": [
+          "test_report"
+        ],
+        "owning_stage": "testing",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-5-implement"
+        ],
+        "id": "FR-5-document",
+        "inputs": [
+          "design",
+          "implementation_report"
+        ],
+        "outputs": [
+          "docs_snippet"
+        ],
+        "owning_stage": "documentation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [],
+        "id": "FR-6-design",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "design"
+        ],
+        "owning_stage": "architecture",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-6-design"
+        ],
+        "id": "FR-6-implement",
+        "inputs": [
+          "design"
+        ],
+        "outputs": [
+          "code_patch",
+          "implementation_report"
+        ],
+        "owning_stage": "implementation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-6-implement"
+        ],
+        "id": "FR-6-test",
+        "inputs": [
+          "implementation_report"
+        ],
+        "outputs": [
+          "test_report"
+        ],
+        "owning_stage": "testing",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-6-implement"
+        ],
+        "id": "FR-6-document",
+        "inputs": [
+          "design",
+          "implementation_report"
+        ],
+        "outputs": [
+          "docs_snippet"
+        ],
+        "owning_stage": "documentation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [],
+        "id": "FR-7-design",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "design"
+        ],
+        "owning_stage": "architecture",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-7-design"
+        ],
+        "id": "FR-7-implement",
+        "inputs": [
+          "design"
+        ],
+        "outputs": [
+          "code_patch",
+          "implementation_report"
+        ],
+        "owning_stage": "implementation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-7-implement"
+        ],
+        "id": "FR-7-test",
+        "inputs": [
+          "implementation_report"
+        ],
+        "outputs": [
+          "test_report"
+        ],
+        "owning_stage": "testing",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-7-implement"
+        ],
+        "id": "FR-7-document",
+        "inputs": [
+          "design",
+          "implementation_report"
+        ],
+        "outputs": [
+          "docs_snippet"
+        ],
+        "owning_stage": "documentation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-implement",
+          "FR-2-implement",
+          "FR-3-implement",
+          "FR-4-implement",
+          "FR-5-implement",
+          "FR-6-implement",
+          "FR-7-implement"
+        ],
+        "id": "APPLY-1",
+        "inputs": [
+          "code_patch"
+        ],
+        "outputs": [
+          "apply_report"
+        ],
+        "owning_stage": "apply_patch",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-test",
+          "FR-2-test",
+          "FR-3-test",
+          "FR-4-test",
+          "FR-5-test",
+          "FR-6-test",
+          "FR-7-test"
+        ],
+        "id": "SEC-1",
+        "inputs": [
+          "implementation_report",
+          "apply_report"
+        ],
+        "outputs": [
+          "security_review"
+        ],
+        "owning_stage": "security_review",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "SEC-1",
+          "FR-1-document",
+          "FR-2-document",
+          "FR-3-document",
+          "FR-4-document",
+          "FR-5-document",
+          "FR-6-document",
+          "FR-7-document"
+        ],
+        "id": "REL-1",
+        "inputs": [
+          "test_report",
+          "docs_snippet",
+          "security_review"
+        ],
+        "outputs": [
+          "release_report"
+        ],
+        "owning_stage": "release_readiness",
+        "status": "succeeded"
+      }
+    ]
+  }
 }

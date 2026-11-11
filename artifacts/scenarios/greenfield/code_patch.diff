@@ -1,0 +1,33 @@
+--- a/sandbox/shortener_scaffold/contract.py
++++ b/sandbox/shortener_scaffold/contract.py
+@@ -0,0 +1,24 @@
++"""Sandbox scaffold generated from the normalized brief.
++
++The working shortener already implements these routes. This file is a
++reviewable contract skeleton in the run workspace. It is not imported
++by the service and it does not replace src/shortener.
++"""
++
++# FR-1: Create a short link with POST /api/v1/urls.
++
++# FR-2: Redirect with GET /{code} and record the click.
++
++# FR-3: Read metadata with GET /api/v1/urls/{code}.
++
++# FR-4: Read analytics with GET /api/v1/urls/{code}/stats.
++
++# FR-5: Disable a link with DELETE /api/v1/urls/{code}.
++
++# FR-6: Report process health with GET /health.
++
++# FR-7: Report dependency readiness with GET /ready.
++
++def contract_routes() -> list[str]:
++    """Return the requirement ids this scaffold covers."""
++    return ['FR-1', 'FR-2', 'FR-3', 'FR-4', 'FR-5', 'FR-6', 'FR-7']
+--- a/sandbox/shortener_scaffold/README.md
++++ b/sandbox/shortener_scaffold/README.md
+@@ -0,0 +1,3 @@
++# Generated sandbox scaffold
++
++Greenfield code generation writes this skeleton into the run workspace when the product routes already exist. The main checkout is not modified.

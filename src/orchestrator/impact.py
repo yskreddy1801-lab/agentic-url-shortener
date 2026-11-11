@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import ast
+import re
 from pathlib import Path
 
 REQUIRED_SYMBOLS = {
@@ -44,6 +45,38 @@ def scan_repository(root: Path) -> dict:
         routes.extend(info["routes"])
         symbols.extend(info["symbols"])
     return {"modules": modules, "routes": routes, "symbols": symbols, "missing_package": False}
+
+
+def analyze_planned_change(code_map: dict, requirements: dict) -> dict:
+    """Impact of a brownfield brief against the current tree.
+
+    The base shortener must already be present. Routes named by the brief that
+    are absent are planned additions for the implementation stage, not failures.
+    """
+    base = analyze_alias_and_expiry(code_map)
+    present = {(route["method"], route["path"]) for route in code_map.get("routes", [])}
+    planned = []
+    for item in requirements.get("functional_requirements") or []:
+        text = item["statement"] + " " + " ".join(item.get("acceptance") or [])
+        for match in re.finditer(r"\b(GET|POST|DELETE|PUT|PATCH)\s+(/[A-Za-z0-9_./{}-]+)", text):
+            method, path = match.group(1).upper(), match.group(2).rstrip(".")
+            planned.append(
+                {
+                    "requirement_id": item["id"],
+                    "method": method,
+                    "path": path,
+                    "present": (method, path) in present,
+                }
+            )
+    base["change"] = requirements.get("title") or base["change"]
+    base["planned_additions"] = planned
+    base["insertion_points"] = [
+        "src/shortener/api.py",
+        "src/shortener/app.py",
+        "src/shortener/service.py",
+        "tests/test_shortener_api.py",
+    ]
+    return base
 
 
 def analyze_alias_and_expiry(code_map: dict) -> dict:

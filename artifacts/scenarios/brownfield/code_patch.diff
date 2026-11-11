@@ -1,0 +1,108 @@
+--- a/src/shortener/bulk.py
++++ b/src/shortener/bulk.py
+@@ -0,0 +1,31 @@
++"""Bulk creation of short links."""
++
++from __future__ import annotations
++
++from shortener.errors import AppError
++from shortener.service import create_link
++
++
++def create_bulk(session, items: list[dict], now, code_length: int) -> list[dict]:
++    if not 1 <= len(items) <= 20:
++        raise AppError(422, "invalid_bulk", "Provide between 1 and 20 links")
++    created = []
++    for item in items:
++        link, replayed = create_link(
++            session,
++            target_url=item["url"],
++            alias=item.get("alias"),
++            ttl_seconds=item.get("ttl_seconds"),
++            expires_at=None,
++            idempotency_key=None,
++            now=now,
++            code_length=code_length,
++        )
++        created.append(
++            {
++                "code": link.code,
++                "target_url": link.target_url,
++                "replayed": replayed,
++            }
++        )
++    return created
+--- a/src/shortener/bulk_api.py
++++ b/src/shortener/bulk_api.py
+@@ -0,0 +1,33 @@
++"""HTTP route for bulk link creation."""
++
++from __future__ import annotations
++
++from fastapi import APIRouter, Request
++from pydantic import BaseModel, ConfigDict, Field
++
++from shortener.bulk import create_bulk
++
++router = APIRouter()
++
++
++class BulkItem(BaseModel):
++    model_config = ConfigDict(extra="forbid")
++
++    url: str = Field(min_length=1, max_length=2048)
++    alias: str | None = None
++    ttl_seconds: int | None = Field(default=None, ge=1, le=31_536_000)
++
++
++class BulkIn(BaseModel):
++    model_config = ConfigDict(extra="forbid")
++
++    items: list[BulkItem] = Field(min_length=1, max_length=20)
++
++
++@router.post("/api/v1/urls/bulk", status_code=201)
++def create_bulk_urls(payload: BulkIn, request: Request):
++    items = [item.model_dump() for item in payload.items]
++    now = request.app.state.clock.now()
++    with request.app.state.sessions() as session:
++        created = create_bulk(session, items, now, request.app.state.settings.code_length)
++    return {"items": created}
+--- a/src/shortener/app.py
++++ b/src/shortener/app.py
+@@ -134,6 +134,8 @@
+ 
+     app.include_router(system_router)
+     app.include_router(api_router)
++    from shortener.bulk_api import router as bulk_router
++    app.include_router(bulk_router)
+     app.include_router(orchestrator_router)
+     app.include_router(redirect_router)
+     return app
+--- a/tests/test_bulk_create.py
++++ b/tests/test_bulk_create.py
+@@ -0,0 +1,24 @@
++"""Generated coverage for POST /api/v1/urls/bulk."""
++
++from __future__ import annotations
++
++
++def test_bulk_create_lists_a_code_per_url(client):
++    response = client.post(
++        "/api/v1/urls/bulk",
++        json={"items": [{"url": "https://example.com/a"}, {"url": "https://example.com/b"}]},
++    )
++    assert response.status_code == 201
++    body = response.json()
++    assert len(body["items"]) == 2
++    assert all(item["code"] for item in body["items"])
++
++
++def test_bulk_rejects_an_unsafe_url(client):
++    scheme = "java" + "script"
++    response = client.post(
++        "/api/v1/urls/bulk",
++        json={"items": [{"url": f"{scheme}:alert(1)"}]},
++    )
++    assert response.status_code == 422
++    assert response.json()["error"]["code"] == "unsafe_url"

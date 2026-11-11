@@ -1,34 +1,5 @@
 {
-  "apis": [
-    {
-      "file": "src/shortener/api.py",
-      "function": "create_url",
-      "method": "POST",
-      "path": "/api/v1/urls",
-      "requirement_id": "FR-1"
-    },
-    {
-      "file": "src/shortener/api.py",
-      "function": "create_url",
-      "method": "POST",
-      "path": "/api/v1/urls",
-      "requirement_id": "FR-2"
-    },
-    {
-      "file": "src/shortener/api.py",
-      "function": "redirect_code",
-      "method": "GET",
-      "path": "/{code}",
-      "requirement_id": "FR-2"
-    },
-    {
-      "file": "src/shortener/api.py",
-      "function": "get_stats",
-      "method": "GET",
-      "path": "/api/v1/urls/{code}/stats",
-      "requirement_id": "FR-3"
-    }
-  ],
+  "apis": [],
   "breaking_changes": [],
   "components": [
     {
@@ -44,8 +15,8 @@
         "create_url",
         "get_metadata",
         "get_stats",
-        "delete_url",
-        "redirect_code"
+        "purge_stored_clicks",
+        "delete_url"
       ]
     },
     {
@@ -70,6 +41,16 @@
         "generate_code",
         "ALPHABET",
         "RESERVED_ALIASES"
+      ]
+    },
+    {
+      "name": "src/shortener/compliance.py",
+      "symbols": [
+        "sanitize_referrer",
+        "purge_clicks",
+        "_EMAIL",
+        "_UNSAFE_SCHEMES",
+        "DATA_CLASSIFICATION"
       ]
     },
     {
@@ -215,8 +196,8 @@
       "why": "A replay must return the original row. Recomputing ttl from 'now' would mint a second link."
     },
     {
-      "decision": "The implementation stage verifies the repository and does not rewrite it",
-      "why": "Code changes stay in reviewable commits. The workflow proves the tree matches the requirements."
+      "decision": "Generated patches land in the run workspace, not in the main checkout",
+      "why": "A missing route becomes a unified diff and new files. Applying them requires approval. The main tree stays clean."
     }
   ],
   "discovered_routes": [
@@ -249,6 +230,11 @@
       "function": "get_stats",
       "method": "GET",
       "path": "/api/v1/urls/{code}/stats"
+    },
+    {
+      "function": "purge_stored_clicks",
+      "method": "POST",
+      "path": "/api/v1/compliance/purge"
     },
     {
       "function": "delete_url",
@@ -296,7 +282,7 @@
     }
   ],
   "impact_analysis": {
-    "change": "optional custom aliases and optional link expiration",
+    "change": "Bulk link creation",
     "data_flow": [
       "Client POST body enters validate_target_url and validate_alias, then create_link persists a ShortLink with code, target_url, expires_at, and optional idempotency_key.",
       "GET /{code} calls resolve_redirect. link_status returns disabled or expired as 410, and an active link continues to record_click before a 302.",
@@ -391,7 +377,21 @@
         ]
       }
     ],
+    "insertion_points": [
+      "src/shortener/api.py",
+      "src/shortener/app.py",
+      "src/shortener/service.py",
+      "tests/test_shortener_api.py"
+    ],
     "missing_symbols": [],
+    "planned_additions": [
+      {
+        "method": "POST",
+        "path": "/api/v1/urls/bulk",
+        "present": false,
+        "requirement_id": "FR-1"
+      }
+    ],
     "risks": [
       "Custom aliases are low entropy. Stats and delete are unauthenticated, so a guessable alias is a capability.",
       "Expiry uses the application clock. A skewed clock expires links early or late.",
@@ -401,13 +401,11 @@
     "verified_symbols": true
   },
   "kind": "brownfield",
-  "markdown": "# Custom aliases and expiration\n\nThe shortener already creates links, redirects them, and records clicks. Add optional custom aliases and optional expiration without changing links that use neither.\n\n## Requirements in scope\n\n- **FR-1**: Accept an optional alias on POST /api/v1/urls.\n  - Acceptance: reserved aliases are rejected and a colliding alias returns 409.\n- **FR-2**: Accept an optional expiration on POST /api/v1/urls.\n  - Acceptance: ttl_seconds or expires_at is stored, and GET /{code} returns 410 after the link is expired.\n- **FR-3**: Keep analytics available with GET /api/v1/urls/{code}/stats after expiry.\n  - Acceptance: clicks recorded before expiry remain in the totals.\n\n## API surface grounded in the source tree\n\n- `POST /api/v1/urls` in `src/shortener/api.py` (`create_url`) for FR-1\n- `POST /api/v1/urls` in `src/shortener/api.py` (`create_url`) for FR-2\n- `GET /{code}` in `src/shortener/api.py` (`redirect_code`) for FR-2\n- `GET /api/v1/urls/{code}/stats` in `src/shortener/api.py` (`get_stats`) for FR-3\n\n## Data model\n\n- `ShortLink` in `src/shortener/models.py`: id, code, target_url, is_custom, expires_at, disabled_at, idempotency_key, request_hash, created_at, clicks\n- `Click` in `src/shortener/models.py`: id, link_id, clicked_at, clicked_day, referrer, link\n\n## Decisions\n\n- **Redirect with 302 and Cache-Control: no-store.** A cached 301 would keep sending people to a target after expiry or disable.\n- **Non-sequential codes from a CSPRNG alphabet.** A counter leaks volume and lets neighbors guess nearby links.\n- **Soft delete.** Metadata and stats stay explainable after a link is turned off.\n- **Idempotency-Key compares a hash of the request, not of the derived expiry instant.** A replay must return the original row. Recomputing ttl from 'now' would mint a second link.\n- **The implementation stage verifies the repository and does not rewrite it.** Code changes stay in reviewable commits. The workflow proves the tree matches the requirements.\n\n## Failure modes\n\n- Unknown code: 404 not_found\n- Expired or disabled link: 410 expired or disabled\n- Alias already used: 409 alias_taken\n- Same Idempotency-Key, different body: 409 idempotency_conflict\n- Non-http(s) scheme or embedded credentials: 422 unsafe_url\n- Create rate exceeded: 429 rate_limited\n- Generated code collides: Retry with a new code, then 503\n- Click insert fails: Log and still redirect\n\n## Impact analysis\n\noptional custom aliases and optional link expiration\n\nModules:\n- `src/shortener/models.py` (ShortLink, Click): ShortLink stores the public code, target, expiry, and soft-delete timestamp.\n- `src/shortener/service.py` (create_link, resolve_redirect, link_status, record_click, deactivate_link, link_stats): Create, redirect policy, click recording, and stats live in the service.\n- `src/shortener/api.py` (create_url, redirect_code, get_metadata, get_stats, delete_url): HTTP contract for create, redirect, metadata, stats, and delete.\n- `src/shortener/validation.py` (validate_target_url, validate_alias): Scheme checks and alias rules run before a row is written.\n- `src/shortener/codes.py` (generate_code, RESERVED_ALIASES): Reserved aliases and the non-sequential code generator.\n\nAPIs:\n- `POST /api/v1/urls`: Accepts optional alias, ttl_seconds, and expires_at.\n- `GET /{code}`: Returns 410 when the link is expired or disabled, otherwise 302 and a click.\n- `GET /api/v1/urls/{code}`: Metadata includes expiry, disabled flag, and status.\n- `GET /api/v1/urls/{code}/stats`: Stats remain available after expiry or soft-delete.\n- `DELETE /api/v1/urls/{code}`: Soft-disables the link. A second delete is idempotent.\n\nData flow:\n- Client POST body enters validate_target_url and validate_alias, then create_link persists a ShortLink with code, target_url, expires_at, and optional idempotency_key.\n- GET /{code} calls resolve_redirect. link_status returns disabled or expired as 410, and an active link continues to record_click before a 302.\n- GET /api/v1/urls/{code}/stats calls link_stats, which aggregates clicks for that link even when the link is later expired or disabled.\n- DELETE /api/v1/urls/{code} calls deactivate_link, which sets disabled_at and leaves the row in place.\n\nRisks:\n- Custom aliases are low entropy. Stats and delete are unauthenticated, so a guessable alias is a capability.\n- Expiry uses the application clock. A skewed clock expires links early or late.\n- Redirect responses send Cache-Control: no-store so a cached 302 does not outlive expiry.\n- Links created without an alias or expiry are unchanged. This change does not backfill a TTL.\n",
+  "markdown": "# Bulk link creation\n\nThe shortener already creates one link per request. Callers need to create a batch without changing the single-create API.\n\n## Requirements in scope\n\n- **FR-1**: Create many links in one call with POST /api/v1/urls/bulk.\n  - Acceptance: the body accepts 1 to 20 http or https urls and the response lists a code for each item. A javascript scheme inside the batch is rejected.\n\n## API surface grounded in the source tree\n\n- No requirement path matched a scanned route.\n\n## Data model\n\n- `ShortLink` in `src/shortener/models.py`: id, code, target_url, is_custom, expires_at, disabled_at, idempotency_key, request_hash, created_at, clicks\n- `Click` in `src/shortener/models.py`: id, link_id, clicked_at, clicked_day, referrer, link\n\n## Decisions\n\n- **Redirect with 302 and Cache-Control: no-store.** A cached 301 would keep sending people to a target after expiry or disable.\n- **Non-sequential codes from a CSPRNG alphabet.** A counter leaks volume and lets neighbors guess nearby links.\n- **Soft delete.** Metadata and stats stay explainable after a link is turned off.\n- **Idempotency-Key compares a hash of the request, not of the derived expiry instant.** A replay must return the original row. Recomputing ttl from 'now' would mint a second link.\n- **Generated patches land in the run workspace, not in the main checkout.** A missing route becomes a unified diff and new files. Applying them requires approval. The main tree stays clean.\n\n## Failure modes\n\n- Unknown code: 404 not_found\n- Expired or disabled link: 410 expired or disabled\n- Alias already used: 409 alias_taken\n- Same Idempotency-Key, different body: 409 idempotency_conflict\n- Non-http(s) scheme or embedded credentials: 422 unsafe_url\n- Create rate exceeded: 429 rate_limited\n- Generated code collides: Retry with a new code, then 503\n- Click insert fails: Log and still redirect\n\n## Impact analysis\n\noptional custom aliases and optional link expiration\n\nModules:\n- `src/shortener/models.py` (ShortLink, Click): ShortLink stores the public code, target, expiry, and soft-delete timestamp.\n- `src/shortener/service.py` (create_link, resolve_redirect, link_status, record_click, deactivate_link, link_stats): Create, redirect policy, click recording, and stats live in the service.\n- `src/shortener/api.py` (create_url, redirect_code, get_metadata, get_stats, delete_url): HTTP contract for create, redirect, metadata, stats, and delete.\n- `src/shortener/validation.py` (validate_target_url, validate_alias): Scheme checks and alias rules run before a row is written.\n- `src/shortener/codes.py` (generate_code, RESERVED_ALIASES): Reserved aliases and the non-sequential code generator.\n\nAPIs:\n- `POST /api/v1/urls`: Accepts optional alias, ttl_seconds, and expires_at.\n- `GET /{code}`: Returns 410 when the link is expired or disabled, otherwise 302 and a click.\n- `GET /api/v1/urls/{code}`: Metadata includes expiry, disabled flag, and status.\n- `GET /api/v1/urls/{code}/stats`: Stats remain available after expiry or soft-delete.\n- `DELETE /api/v1/urls/{code}`: Soft-disables the link. A second delete is idempotent.\n\nData flow:\n- Client POST body enters validate_target_url and validate_alias, then create_link persists a ShortLink with code, target_url, expires_at, and optional idempotency_key.\n- GET /{code} calls resolve_redirect. link_status returns disabled or expired as 410, and an active link continues to record_click before a 302.\n- GET /api/v1/urls/{code}/stats calls link_stats, which aggregates clicks for that link even when the link is later expired or disabled.\n- DELETE /api/v1/urls/{code} calls deactivate_link, which sets disabled_at and leaves the row in place.\n\nRisks:\n- Custom aliases are low entropy. Stats and delete are unauthenticated, so a guessable alias is a capability.\n- Expiry uses the application clock. A skewed clock expires links early or late.\n- Redirect responses send Cache-Control: no-store so a cached 302 does not outlive expiry.\n- Links created without an alias or expiry are unchanged. This change does not backfill a TTL.\n\n## Planned change\n\n- `POST /api/v1/urls/bulk` (not in the tree yet) for FR-1\n\nInsertion points: `src/shortener/api.py`, `src/shortener/app.py`, `src/shortener/service.py`, `tests/test_shortener_api.py`\n",
   "requirement_ids": [
-    "FR-1",
-    "FR-2",
-    "FR-3"
+    "FR-1"
   ],
   "selected_interpretation": null,
-  "summary": "The shortener already creates links, redirects them, and records clicks. Add optional custom aliases and optional expiration without changing links that use neither.",
-  "title": "Custom aliases and expiration"
+  "summary": "The shortener already creates one link per request. Callers need to create a batch without changing the single-create API.",
+  "title": "Bulk link creation"
 }

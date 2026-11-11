@@ -74,9 +74,9 @@ def resolve_redirect(session: Session, code: str, now: datetime) -> ShortLink:
 
 
 def record_click(session: Session, link: ShortLink, referrer: str | None, now: datetime) -> None:
-    cleaned = (referrer or "").strip()
-    if len(cleaned) > 512:
-        cleaned = cleaned[:512]
+    from shortener.compliance import sanitize_referrer
+
+    cleaned = sanitize_referrer(referrer)
     moment = as_utc(now)
     session.add(
         Click(

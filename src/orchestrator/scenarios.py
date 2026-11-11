@@ -46,26 +46,22 @@ Out of scope:
 - A public marketing site.
 """
 
-BROWNFIELD_BRIEF = """Title: Custom aliases and expiration
+BROWNFIELD_BRIEF = """Title: Bulk link creation
 
 Problem:
-The shortener already creates links, redirects them, and records clicks. Add optional custom aliases and optional expiration without changing links that use neither.
+The shortener already creates one link per request. Callers need to create a batch without changing the single-create API.
 
 Requirements:
-- FR: Accept an optional alias on POST /api/v1/urls.
-  Acceptance: reserved aliases are rejected and a colliding alias returns 409.
-- FR: Accept an optional expiration on POST /api/v1/urls.
-  Acceptance: ttl_seconds or expires_at is stored, and GET /{code} returns 410 after the link is expired.
-- FR: Keep analytics available with GET /api/v1/urls/{code}/stats after expiry.
-  Acceptance: clicks recorded before expiry remain in the totals.
+- FR: Create many links in one call with POST /api/v1/urls/bulk.
+  Acceptance: the body accepts 1 to 20 http or https urls and the response lists a code for each item. A javascript scheme inside the batch is rejected.
 
 Constraints:
-- Existing links with no alias and no expiry keep redirecting.
-- Soft-delete with DELETE /api/v1/urls/{code} stays independent of expiry.
+- Do not change the behavior of POST /api/v1/urls.
+- Keep GET /{code} redirect behavior.
 - Include an impact analysis of modules, APIs, and data flow.
 
 Out of scope:
-- Backfilling an expiration onto links that were created without one.
+- A background import from a CSV file.
 """
 
 AMBIGUOUS_BRIEF = """make links better
@@ -82,7 +78,7 @@ SCENARIOS = {
     "brownfield": Scenario(
         name="brownfield",
         kind="brownfield",
-        title="Add custom aliases and expiration to the existing service",
+        title="Add bulk creation on top of the existing shortener",
         brief=BROWNFIELD_BRIEF,
     ),
     "ambiguous": Scenario(

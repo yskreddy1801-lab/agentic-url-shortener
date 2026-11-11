@@ -65,7 +65,7 @@
   "constraints": [],
   "decision": {
     "actor": "demo_policy",
-    "id": "dec_a4990877e1",
+    "id": "dec_4892f0451b",
     "rationale": "Selected 'analytics' with score 1.0. Rule: highest rubric score, then lexical id. Ranking: analytics=1.0, aliases=0.9, auto_expire_all=0.25. Non-breaking, testable, low-risk, in-codebase, and narrow scope score higher. Demo mode records this choice so the run can continue. A supervised run pauses until a person picks an interpretation.",
     "rule": "max_rubric_score_then_lexical_id",
     "selected": "analytics"

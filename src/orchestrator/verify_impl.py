@@ -13,6 +13,7 @@ def verify_implementation(requirements: dict, code_map: dict) -> dict:
     symbols = set(code_map.get("symbols", []))
     rows = []
     gaps: list[str] = []
+    missing_routes: list[dict] = []
     for requirement in requirements.get("functional_requirements") or []:
         text = requirement["statement"] + " " + " ".join(requirement.get("acceptance") or [])
         paths = [(match.group(1).upper(), match.group(2).rstrip(".")) for match in _PATH.finditer(text)]
@@ -24,6 +25,7 @@ def verify_implementation(requirements: dict, code_map: dict) -> dict:
                     evidence.append({"type": "route", "method": method, "path": path})
                 else:
                     gaps.append(f"{requirement['id']} expects {method} {path}, which is not defined")
+                    missing_routes.append({"requirement_id": requirement["id"], "method": method, "path": path})
             status = "satisfied" if all((method, path) in routes for method, path in paths) else "gap"
         elif named:
             found = [name for name in named if name in symbols]
@@ -48,9 +50,10 @@ def verify_implementation(requirements: dict, code_map: dict) -> dict:
         "verified": not gaps and bool(rows),
         "requirements": rows,
         "gaps": gaps,
+        "missing_routes": missing_routes,
         "route_count": len(routes),
         "note": (
-            "This stage checks that each requirement names a route or symbol present in the tree. "
-            "Behavioral proof is the testing stage, which executes the shortener suite."
+            "Routes that already exist are evidence. Missing routes become a generated patch "
+            "when a deterministic template exists. Tests then run against the run workspace."
         ),
     }

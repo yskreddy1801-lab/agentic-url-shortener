@@ -1,7 +1,14 @@
 {
   "artifacts": [
     {
-      "hash": "619167eaf787a2dc5fee83b4e1a30563698b21e11f69cc382a3aace74648e905",
+      "hash": "36dccd05035e92dbd1c872072adf732367d86319a483b308a48aa2274c3e8041",
+      "is_current": true,
+      "name": "apply_report",
+      "stage_id": "apply_patch",
+      "version": 1
+    },
+    {
+      "hash": "1f7d8e67d068096b04c83b6c6f13277d7bf5ef455f0825369f6215b78c87b337",
       "is_current": true,
       "name": "design",
       "stage_id": "architecture",
@@ -15,42 +22,105 @@
       "version": 1
     },
     {
-      "hash": "674141e777e1b5f14132437997b9a2821a9e7332f232144881d5d1821125a5f7",
+      "hash": "97318d131ebb7cc31bd0d7ec1add9845e097e0a624737fe6db3adce7c1e5d331",
       "is_current": true,
       "name": "implementation_report",
       "stage_id": "implementation",
       "version": 1
     },
     {
-      "hash": "bf531e3b82f2a3805ac8f5f5626927d15c8257f895329b3a764d317c361c713a",
+      "hash": "e0e3940bdb1cbcd50c48f2874b45dba68efc35b4edceba088aeec0f06c391074",
       "is_current": true,
       "name": "normalized_requirements",
       "stage_id": "requirements",
       "version": 1
     },
     {
-      "hash": "e3bc1ff68d62b5171e36b1ba40c4b01e62a7482cab8d1f1260b16c85b95128a3",
+      "hash": "35cd9a2e0cd04935cbc3d415a88507df5cbf2da8aab837ba07cd5ed8d32a5fad",
       "is_current": true,
       "name": "release_checklist",
       "stage_id": "release_readiness",
       "version": 1
     },
     {
-      "hash": "2c2f005d94948e6ead28835df3f992512601aaa49f1aede1f6aa2286e09abe91",
+      "hash": "a345b645da45ff0cb459687eb756d1f56bd3d8de4fa2588fbdac78d111dd3148",
       "is_current": true,
       "name": "release_report",
       "stage_id": "release_readiness",
       "version": 1
     },
     {
-      "hash": "072de968941e5d1ef2a9e265328a8567a751597376ee1d3992834a9e05ac8e6c",
+      "hash": "f7ad8672d7c3af0dab592fb83b3b949f91c5e3b9f7fad440552b949c6a85d29f",
       "is_current": true,
       "name": "security_review",
       "stage_id": "security_review",
       "version": 1
     },
     {
-      "hash": "9ae69ec512009e41edc50b1c8aa7ebe6f8b724d58482e1564cda9faedd5743c6",
+      "hash": "0a3acc001a399e2f9c001a85df25961554fafaf01c75bc8d82a1514b14b616d0",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "planning",
+      "version": 1
+    },
+    {
+      "hash": "ed6585320197614e10d134ae72e45e2078a7bab085d344cd158b1fd5ff4a9055",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "planning",
+      "version": 2
+    },
+    {
+      "hash": "70ed3b600eb2e83cca36424592f3526a44efc3c127dedbcf0d708a9084e9be13",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "architecture",
+      "version": 3
+    },
+    {
+      "hash": "49bc7615bdcdaa24ea10cdc529b9c5e34b7ddf28e242f38833e81cb80596a256",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "implementation",
+      "version": 4
+    },
+    {
+      "hash": "cda1721fee56a9d3bb383e130352c8b307f2c166bf35f07d5fea4a2ada6bfc86",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "apply_patch",
+      "version": 5
+    },
+    {
+      "hash": "3c59464796e1c89e705302def7840e2d407f53360e1637657d64a267b0d2854e",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "testing",
+      "version": 6
+    },
+    {
+      "hash": "db3a2e2080cd9a4c26c096b47397da9e3ec1c5d284ef8ff6aad65d270d20e6da",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "documentation",
+      "version": 7
+    },
+    {
+      "hash": "1b9a2dcd4f529a11a7b369b8bbec7147a820cb30290e478779dbad28dfe794cb",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "security_review",
+      "version": 8
+    },
+    {
+      "hash": "b477942dd658adedf7861fc1ee52349aef3ba673d08308a9718d793d2a3a7e41",
+      "is_current": true,
+      "name": "task_plan",
+      "stage_id": "release_readiness",
+      "version": 9
+    },
+    {
+      "hash": "6dd202f2592029698650ce0e05dbad691877493c1b87cc955b08eb1126610b89",
       "is_current": true,
       "name": "test_report",
       "stage_id": "testing",
@@ -59,53 +129,63 @@
   ],
   "checkpoints": [
     {
-      "created_at": "2026-11-06T17:39:22.075125+00:00",
-      "id": "ckpt_a519eaed88",
+      "created_at": "2026-11-11T15:47:45.363939+00:00",
+      "id": "ckpt_c37fd85148",
       "label": "init"
     },
     {
-      "created_at": "2026-11-06T17:39:22.086286+00:00",
-      "id": "ckpt_0adb8ad37c",
+      "created_at": "2026-11-11T15:47:45.372415+00:00",
+      "id": "ckpt_194ad46b5f",
       "label": "pre_decision:requirements"
     },
     {
-      "created_at": "2026-11-06T17:39:22.104442+00:00",
-      "id": "ckpt_325c2f6c96",
+      "created_at": "2026-11-11T15:47:45.385486+00:00",
+      "id": "ckpt_c6996cbf0b",
       "label": "after:requirements"
     },
     {
-      "created_at": "2026-11-06T17:39:22.131031+00:00",
-      "id": "ckpt_cfaa4e7961",
+      "created_at": "2026-11-11T15:47:45.400835+00:00",
+      "id": "ckpt_556cda01eb",
+      "label": "after:planning"
+    },
+    {
+      "created_at": "2026-11-11T15:47:45.427889+00:00",
+      "id": "ckpt_c5fab8db97",
       "label": "after:architecture"
     },
     {
-      "created_at": "2026-11-06T17:39:22.155962+00:00",
-      "id": "ckpt_0224b1c405",
+      "created_at": "2026-11-11T15:47:45.449867+00:00",
+      "id": "ckpt_35d70e47fc",
       "label": "after:implementation"
     },
     {
-      "created_at": "2026-11-06T17:39:22.192627+00:00",
-      "id": "ckpt_7799ddcfd5",
-      "label": "after:documentation"
+      "created_at": "2026-11-11T15:47:45.469576+00:00",
+      "id": "ckpt_d9ca3f9dc2",
+      "label": "after:apply_patch"
     },
     {
-      "created_at": "2026-11-06T17:39:22.205047+00:00",
-      "id": "ckpt_8afb75061a",
+      "created_at": "2026-11-11T15:47:45.505917+00:00",
+      "id": "ckpt_7e18e50406",
       "label": "after:security_review"
     },
     {
-      "created_at": "2026-11-06T17:39:23.329119+00:00",
-      "id": "ckpt_4f2e565f1f",
+      "created_at": "2026-11-11T15:47:45.516870+00:00",
+      "id": "ckpt_51224efbe0",
+      "label": "after:documentation"
+    },
+    {
+      "created_at": "2026-11-11T15:47:46.755214+00:00",
+      "id": "ckpt_4a11e02596",
       "label": "after:testing"
     },
     {
-      "created_at": "2026-11-06T17:39:23.334094+00:00",
-      "id": "ckpt_d2ebeaf301",
+      "created_at": "2026-11-11T15:47:46.766597+00:00",
+      "id": "ckpt_c39b581f56",
       "label": "pre_approval:release_readiness"
     },
     {
-      "created_at": "2026-11-06T17:39:23.366724+00:00",
-      "id": "ckpt_dd57ed8939",
+      "created_at": "2026-11-11T15:47:46.793291+00:00",
+      "id": "ckpt_3104fecb9c",
       "label": "after:release_readiness"
     }
   ],
@@ -159,15 +239,15 @@
           "title": "Expire every existing link"
         }
       ],
-      "created_at": "2026-11-06T17:39:22.089903+00:00",
-      "id": "dec_a4990877e1",
+      "created_at": "2026-11-11T15:47:45.375479+00:00",
+      "id": "dec_4892f0451b",
       "invalidated": false,
       "kind": "ambiguity",
       "payload": {},
       "question": "The brief does not pin down a single engineering outcome. Choose an interpretation.",
       "rationale": "Selected 'analytics' with score 1.0. Rule: highest rubric score, then lexical id. Ranking: analytics=1.0, aliases=0.9, auto_expire_all=0.25. Non-breaking, testable, low-risk, in-codebase, and narrow scope score higher. Demo mode records this choice so the run can continue. A supervised run pauses until a person picks an interpretation.",
       "rule": "max_rubric_score_then_lexical_id",
-      "run_id": "run_e24d467aa88f",
+      "run_id": "run_b5dc8d5b2d75",
       "selected": "analytics",
       "stage_id": "requirements"
     },
@@ -183,8 +263,8 @@
           "title": "Reject"
         }
       ],
-      "created_at": "2026-11-06T17:39:23.338736+00:00",
-      "id": "dec_79238b1e79",
+      "created_at": "2026-11-11T15:47:46.769415+00:00",
+      "id": "dec_cf3df72cd5",
       "invalidated": false,
       "kind": "approval",
       "payload": {
@@ -194,10 +274,158 @@
       "question": "Release readiness is a high-impact checkpoint. Approve it to publish the release report.",
       "rationale": "Demo mode records the pre-approval checkpoint and then auto-approves so a CLI run can finish. This is not a human release sign-off.",
       "rule": "demo_auto_approve",
-      "run_id": "run_e24d467aa88f",
+      "run_id": "run_b5dc8d5b2d75",
       "selected": "approved",
       "stage_id": "release_readiness"
     }
   ],
-  "run_id": "run_e24d467aa88f"
+  "run_id": "run_b5dc8d5b2d75",
+  "task_plan": {
+    "edges": [
+      {
+        "from": "FR-1-design",
+        "to": "FR-1-implement"
+      },
+      {
+        "from": "FR-1-implement",
+        "to": "FR-1-test"
+      },
+      {
+        "from": "FR-1-implement",
+        "to": "FR-1-document"
+      },
+      {
+        "from": "FR-1-implement",
+        "to": "APPLY-1"
+      },
+      {
+        "from": "FR-1-test",
+        "to": "SEC-1"
+      },
+      {
+        "from": "SEC-1",
+        "to": "REL-1"
+      },
+      {
+        "from": "FR-1-document",
+        "to": "REL-1"
+      }
+    ],
+    "tasks": [
+      {
+        "depends_on": [],
+        "id": "PLAN-1",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "task_plan"
+        ],
+        "owning_stage": "planning",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [],
+        "id": "FR-1-design",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "design"
+        ],
+        "owning_stage": "architecture",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-design"
+        ],
+        "id": "FR-1-implement",
+        "inputs": [
+          "design"
+        ],
+        "outputs": [
+          "code_patch",
+          "implementation_report"
+        ],
+        "owning_stage": "implementation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-implement"
+        ],
+        "id": "FR-1-test",
+        "inputs": [
+          "implementation_report"
+        ],
+        "outputs": [
+          "test_report"
+        ],
+        "owning_stage": "testing",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-implement"
+        ],
+        "id": "FR-1-document",
+        "inputs": [
+          "design",
+          "implementation_report"
+        ],
+        "outputs": [
+          "docs_snippet"
+        ],
+        "owning_stage": "documentation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-implement"
+        ],
+        "id": "APPLY-1",
+        "inputs": [
+          "code_patch"
+        ],
+        "outputs": [
+          "apply_report"
+        ],
+        "owning_stage": "apply_patch",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-test"
+        ],
+        "id": "SEC-1",
+        "inputs": [
+          "implementation_report",
+          "apply_report"
+        ],
+        "outputs": [
+          "security_review"
+        ],
+        "owning_stage": "security_review",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "SEC-1",
+          "FR-1-document"
+        ],
+        "id": "REL-1",
+        "inputs": [
+          "test_report",
+          "docs_snippet",
+          "security_review"
+        ],
+        "outputs": [
+          "release_report"
+        ],
+        "owning_stage": "release_readiness",
+        "status": "succeeded"
+      }
+    ]
+  }
 }

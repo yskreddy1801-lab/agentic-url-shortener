@@ -3,17 +3,17 @@
     "kind": "greenfield",
     "title": "Build the URL shortener from a clear brief"
   },
-  "created_at": "2026-11-06T17:39:19.445505+00:00",
-  "finished_at": "2026-11-06T17:39:20.799512+00:00",
+  "created_at": "2026-11-11T15:47:41.957554+00:00",
+  "finished_at": "2026-11-11T15:47:43.596520+00:00",
   "human_input": null,
-  "id": "run_f66b1788f594",
+  "id": "run_b759c4745beb",
   "mode": "demo",
   "pause_details": null,
   "pause_kind": null,
   "pause_stage": null,
   "scenario": "greenfield",
-  "started_at": "2026-11-06T17:39:19.445505+00:00",
+  "started_at": "2026-11-11T15:47:41.957554+00:00",
   "status": "succeeded",
   "stop_requested": false,
-  "updated_at": "2026-11-06T17:39:20.799689+00:00"
+  "updated_at": "2026-11-11T15:47:43.596729+00:00"
 }

@@ -43,8 +43,11 @@ def test_three_scenarios_reach_release_readiness(tmp_path):
         metrics = compute_metrics(store, run_id)
         assert metrics["stage_success_rate"] == 1.0
         assert metrics["parallelism_max"] >= 2
+        assert metrics["tasks_total"] > 0
+        assert metrics["tasks_succeeded"] == metrics["tasks_total"]
         assert (tmp_path / name / "events.jsonl").is_file()
         assert (tmp_path / name / "release_checklist.md").is_file()
+        assert (tmp_path / name / "task_plan.md").is_file()
         summaries[name] = (store, run_id, report)
 
     _store, run_id, _report = summaries["ambiguous"]
@@ -64,6 +67,20 @@ def test_three_scenarios_reach_release_readiness(tmp_path):
     assert impact["data_flow"]
     assert impact["impacted_modules"]
     assert any(api["path"] == "/{code}" for api in impact["impacted_apis"])
+    assert any(item["path"] == "/api/v1/urls/bulk" and item["present"] is False for item in impact["planned_additions"])
+    patch = store.get_artifact(run_id, "code_patch")["content"]
+    assert patch["id"] == "patch-bulk-create"
+    assert store.get_artifact(run_id, "apply_report")["content"]["applied"] is True
+    assert store.get_artifact(run_id, "apply_report")["content"]["main_tree_modified"] is False
+    assert not (repo_root() / "src/shortener/bulk.py").exists()
+    security = store.get_artifact(run_id, "security_review")["content"]
+    assert any(item["policy"] == "data_classification" for item in security["findings"])
+
+    store, run_id, _report = summaries["greenfield"]
+    scaffold = store.get_artifact(run_id, "code_patch")["content"]
+    assert scaffold["id"] == "patch-greenfield-scaffold"
+    assert store.get_artifact(run_id, "apply_report")["content"]["applied"] is True
+    assert not (repo_root() / "sandbox").exists()
 
     for name in ("greenfield", "brownfield", "ambiguous"):
         store, run_id, _report = summaries[name]

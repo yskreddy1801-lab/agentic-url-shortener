@@ -2,20 +2,30 @@
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 import sys
 import time
 
+from pathlib import Path
+
+from orchestrator.codegen import generate_patch
 from orchestrator.context import RunContext
 from orchestrator.design_doc import build_design
 from orchestrator.errors import PolicyViolation, StageFailed
-from orchestrator.impact import scan_repository
+from orchestrator.impact import analyze_planned_change, scan_repository
 from orchestrator.normalize import normalize_brief
-from orchestrator.policies import scan_artifacts
+from orchestrator.planner import build_task_plan
+from orchestrator.policies import evaluate_compliance, scan_artifacts
 from orchestrator.verify_impl import verify_implementation
+from orchestrator.workspace import apply_files, create_workspace, rollback_files
 
-TEST_FILES = ["tests/test_validation.py", "tests/test_shortener_api.py"]
+TEST_FILES = [
+    "tests/test_validation.py",
+    "tests/test_shortener_api.py",
+    "tests/test_compliance.py",
+]
 CONTRACT_TOKENS = (
     "javascript",
     "alias_reserved",
@@ -30,8 +40,10 @@ CONTRACT_TOKENS = (
 def build_handlers() -> dict:
     return {
         "requirements": handle_requirements,
+        "planning": handle_planning,
         "architecture": handle_architecture,
         "implementation": handle_implementation,
+        "apply_patch": handle_apply_patch,
         "testing": handle_testing,
         "testing_fallback": handle_testing_fallback,
         "documentation": handle_documentation,
@@ -71,34 +83,89 @@ def handle_requirements(ctx: RunContext) -> None:
     ctx.write_artifact("normalized_requirements", document)
 
 
+def handle_planning(ctx: RunContext) -> None:
+    requirements = ctx.artifact("normalized_requirements")
+    if not isinstance(requirements, dict):
+        raise StageFailed("Normalized requirements are missing", retryable=False)
+    ctx.write_artifact("task_plan", build_task_plan(requirements))
+
+
 def handle_architecture(ctx: RunContext) -> None:
     requirements = ctx.artifact("normalized_requirements")
     if not isinstance(requirements, dict):
         raise StageFailed("Normalized requirements are missing", retryable=False)
     code_map = scan_repository(ctx.repo_root)
     design = build_design(requirements, code_map)
+    if requirements.get("kind") == "brownfield":
+        impact = analyze_planned_change(code_map, requirements)
+        design["impact_analysis"] = impact
+        design["markdown"] = design["markdown"] + _impact_markdown(impact)
+        if not impact.get("verified_symbols"):
+            missing = ", ".join(impact.get("missing_symbols") or [])
+            raise StageFailed(f"Impact analysis could not find the base service: {missing}", retryable=False)
     ctx.write_artifact("design", design)
-    impact = design.get("impact_analysis")
-    if requirements.get("kind") == "brownfield" and impact and not impact.get("verified_symbols"):
-        missing = ", ".join(impact.get("missing_symbols") or [])
-        raise StageFailed(f"Impact analysis could not find the implementation: {missing}", retryable=False)
 
 
 def handle_implementation(ctx: RunContext) -> None:
     requirements = ctx.artifact("normalized_requirements") or {}
     code_map = scan_repository(ctx.repo_root)
     report = verify_implementation(requirements, code_map)
+    patch = generate_patch(requirements, report, ctx.repo_root)
+    if patch is None and report.get("missing_routes"):
+        raise StageFailed(
+            "No code template for: " + "; ".join(report["gaps"]),
+            retryable=False,
+        )
+    report["generated"] = bool(patch and patch.get("files"))
+    report["patch_id"] = patch["id"] if patch else None
     ctx.write_artifact("implementation_report", report)
-    if not report["verified"]:
+    if patch and patch.get("files"):
+        ctx.write_artifact("code_patch", patch)
+    if not report["verified"] and not report["generated"]:
         raise StageFailed("Implementation gaps: " + "; ".join(report["gaps"]), retryable=False)
 
 
+def handle_apply_patch(ctx: RunContext) -> None:
+    patch = ctx.artifact("code_patch") or {}
+    files = patch.get("files") or []
+    if files:
+        ctx.request_approval(
+            "Applying a generated patch is a high-impact action. "
+            "Approve it to write the patch into this run's workspace copy. "
+            "The main checkout is not modified."
+        )
+    workspace = create_workspace(ctx.repo_root, ctx.run_id)
+    snapshot: list[dict] = []
+    if files:
+        snapshot = apply_files(workspace, files)
+        (workspace / ".orch_snapshot.json").write_text(_snapshot_text(snapshot), encoding="utf-8")
+    ctx.write_artifact(
+        "apply_report",
+        {
+            "applied": bool(files),
+            "workspace": str(workspace),
+            "patch_id": patch.get("id"),
+            "files": [item["path"] for item in files],
+            "summary": patch.get("summary") or "No product patch was required.",
+            "main_tree_modified": False,
+        },
+    )
+
+
 def handle_testing(ctx: RunContext) -> None:
-    command = [sys.executable, "-m", "pytest", *TEST_FILES, "-q", "--tb=line", "-p", "no:cacheprovider"]
+    apply_report = ctx.artifact("apply_report") or {}
+    root = Path(apply_report["workspace"]) if apply_report.get("workspace") else ctx.repo_root
+    files = list(TEST_FILES)
+    generated = root / "tests" / "test_bulk_create.py"
+    if generated.is_file():
+        files.append("tests/test_bulk_create.py")
+    command = [sys.executable, "-m", "pytest", *files, "-q", "--tb=line", "-p", "no:cacheprovider"]
     if any(token in " ".join(command) for token in ("test_scenarios", "test_orchestrator")):
         raise StageFailed("Refusing to run orchestrator tests from the testing stage", retryable=False)
-    root = ctx.repo_root
     env = os.environ.copy()
+    for key in list(env):
+        if key.startswith("PYTEST_"):
+            env.pop(key)
     src = str(root / "src")
     env["PYTHONPATH"] = src + os.pathsep + env.get("PYTHONPATH", "")
     started = time.perf_counter()
@@ -127,11 +194,19 @@ def handle_testing(ctx: RunContext) -> None:
         "stderr_tail": stderr[-4000:],
         "contract_tokens_missing": missing,
         "fallback": False,
-        "note": "Executes the repository shortener suite. Does not synthesize new tests from acceptance text.",
+        "note": "Executes the shortener suite in the run workspace, including a generated test when the patch added one.",
+        "workspace": str(root),
+        "patch_rolled_back": False,
     }
+    if completed.returncode != 0 and apply_report.get("applied"):
+        snapshot_path = root / ".orch_snapshot.json"
+        if snapshot_path.is_file():
+            rollback_files(root, json.loads(snapshot_path.read_text(encoding="utf-8")))
+            report["patch_rolled_back"] = True
+            report["note"] = "The suite failed. The applied patch was rolled back inside the run workspace."
     ctx.write_artifact("test_report", report)
     if completed.returncode != 0:
-        raise StageFailed(f"pytest exited {completed.returncode}", retryable=True)
+        raise StageFailed(f"pytest exited {completed.returncode}", retryable=not report["patch_rolled_back"])
 
 
 def handle_testing_fallback(ctx: RunContext) -> None:
@@ -207,6 +282,19 @@ def handle_security_review(ctx: RunContext) -> None:
                 "message": change["description"],
             }
         )
+    compliance_root = Path((ctx.artifact("apply_report") or {}).get("workspace") or ctx.repo_root)
+    compliance = evaluate_compliance(compliance_root)
+    findings.extend(compliance["findings"])
+    findings.append(
+        {
+            "severity": "info",
+            "policy": "data_classification",
+            "message": compliance["classification"]["note"]
+            if "note" in compliance["classification"]
+            else compliance["classification"]["referrer_rule"],
+            "classification": compliance["classification"],
+        }
+    )
     findings.extend(
         [
             {
@@ -274,6 +362,18 @@ def handle_release_readiness(ctx: RunContext) -> None:
             decision.get("id", ""),
             decision.get("rationale", ""),
         )
+    plan = ctx.artifact("task_plan") or {}
+    earlier = [
+        task
+        for task in plan.get("tasks") or []
+        if task.get("owning_stage") != "release_readiness" and task.get("status") != "succeeded"
+    ]
+    add(
+        "Task plan executed for this brief",
+        "pass" if plan.get("tasks") and not earlier else "fail",
+        "task_plan",
+        f"{len(plan.get('tasks') or [])} tasks",
+    )
     add("Architecture and design written", "pass" if design else "fail", "design")
     if requirements.get("kind") == "brownfield":
         impact = design.get("impact_analysis") or {}
@@ -282,12 +382,23 @@ def handle_release_readiness(ctx: RunContext) -> None:
             "pass" if impact.get("verified_symbols") else "fail",
             "design.impact_analysis",
         )
-    add(
-        "Implementation mapped onto the repository",
-        "pass" if implementation.get("verified") else "fail",
-        "implementation_report",
-    )
-    if tests.get("fallback"):
+    apply_report = ctx.artifact("apply_report") or {}
+    if implementation.get("generated"):
+        add(
+            "Generated patch applied in the run workspace",
+            "pass" if apply_report.get("applied") else "fail",
+            "code_patch",
+            apply_report.get("summary", ""),
+        )
+    else:
+        add(
+            "Implementation mapped onto the repository",
+            "pass" if implementation.get("verified") else "fail",
+            "implementation_report",
+        )
+    if tests.get("patch_rolled_back"):
+        add("Behavioral test suite passed", "fail", "test_report", "The generated patch was rolled back after the suite failed.")
+    elif tests.get("fallback"):
         add("Behavioral test suite passed", "fail", "test_report", "Fallback report only; the suite did not pass.")
     else:
         add("Behavioral test suite passed", "pass" if tests.get("passed") else "fail", "test_report")
@@ -301,6 +412,21 @@ def handle_release_readiness(ctx: RunContext) -> None:
     add(
         "Security policy clear of blocking findings",
         "pass" if security and not security.get("blocking") else "fail",
+        "security_review",
+    )
+    compliance_ok = not any(
+        item.get("severity") == "block" and item.get("policy") in {
+            "referrer_sanitized",
+            "referrer_used_on_write",
+            "retention_purge",
+            "purge_endpoint",
+            "retention_window",
+        }
+        for item in security.get("findings") or []
+    )
+    add(
+        "Compliance controls: retention, purge, and referrer sanitizing",
+        "pass" if security and compliance_ok else "fail",
         "security_review",
     )
     breaking = design.get("breaking_changes") or []
@@ -331,10 +457,9 @@ def handle_release_readiness(ctx: RunContext) -> None:
         "SQLite and the in-memory rate limiter are process-local.",
         "Create, stats, and delete are unauthenticated. A custom alias is a guessable capability.",
         "The orchestrator runs in-process. It is not an isolated worker fleet.",
-        "The implementation stage verifies the repository. It does not rewrite or merge code.",
-        "The testing stage runs a fixed suite. It does not generate new tests from acceptance text.",
+        "Generated patches are applied only inside a run workspace. They are not merged to the main checkout.",
         "Demo approval is recorded in the audit log. It is not a production change-management control.",
-        "Click analytics stores referrers with no retention window.",
+        "Referrer retention is a fixed day window in one SQLite file, not a per-tenant policy.",
     ]
     report = {
         "ready": ready,
@@ -371,5 +496,21 @@ def _checklist_markdown(report: dict) -> str:
     lines.extend(["", "## Production gaps kept visible", ""])
     for gap in report["production_gaps"]:
         lines.append(f"- {gap}")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def _snapshot_text(snapshot: list[dict]) -> str:
+    return json.dumps(snapshot)
+
+
+def _impact_markdown(impact: dict) -> str:
+    lines = ["", "## Planned change", ""]
+    for item in impact.get("planned_additions") or []:
+        state = "present" if item.get("present") else "not in the tree yet"
+        lines.append(f"- `{item['method']} {item['path']}` ({state}) for {item.get('requirement_id')}")
+    if impact.get("insertion_points"):
+        lines.append("")
+        lines.append("Insertion points: " + ", ".join(f"`{path}`" for path in impact["insertion_points"]))
     lines.append("")
     return "\n".join(lines)

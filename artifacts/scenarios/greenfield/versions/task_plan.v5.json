@@ -1,0 +1,728 @@
+{
+  "edges": [
+    {
+      "from": "FR-1-design",
+      "to": "FR-1-implement"
+    },
+    {
+      "from": "FR-1-implement",
+      "to": "FR-1-test"
+    },
+    {
+      "from": "FR-1-implement",
+      "to": "FR-1-document"
+    },
+    {
+      "from": "FR-2-design",
+      "to": "FR-2-implement"
+    },
+    {
+      "from": "FR-2-implement",
+      "to": "FR-2-test"
+    },
+    {
+      "from": "FR-2-implement",
+      "to": "FR-2-document"
+    },
+    {
+      "from": "FR-3-design",
+      "to": "FR-3-implement"
+    },
+    {
+      "from": "FR-2-implement",
+      "to": "FR-3-implement"
+    },
+    {
+      "from": "FR-3-implement",
+      "to": "FR-3-test"
+    },
+    {
+      "from": "FR-3-implement",
+      "to": "FR-3-document"
+    },
+    {
+      "from": "FR-4-design",
+      "to": "FR-4-implement"
+    },
+    {
+      "from": "FR-2-implement",
+      "to": "FR-4-implement"
+    },
+    {
+      "from": "FR-4-implement",
+      "to": "FR-4-test"
+    },
+    {
+      "from": "FR-4-implement",
+      "to": "FR-4-document"
+    },
+    {
+      "from": "FR-5-design",
+      "to": "FR-5-implement"
+    },
+    {
+      "from": "FR-2-implement",
+      "to": "FR-5-implement"
+    },
+    {
+      "from": "FR-5-implement",
+      "to": "FR-5-test"
+    },
+    {
+      "from": "FR-5-implement",
+      "to": "FR-5-document"
+    },
+    {
+      "from": "FR-6-design",
+      "to": "FR-6-implement"
+    },
+    {
+      "from": "FR-6-implement",
+      "to": "FR-6-test"
+    },
+    {
+      "from": "FR-6-implement",
+      "to": "FR-6-document"
+    },
+    {
+      "from": "FR-7-design",
+      "to": "FR-7-implement"
+    },
+    {
+      "from": "FR-7-implement",
+      "to": "FR-7-test"
+    },
+    {
+      "from": "FR-7-implement",
+      "to": "FR-7-document"
+    },
+    {
+      "from": "FR-1-implement",
+      "to": "APPLY-1"
+    },
+    {
+      "from": "FR-2-implement",
+      "to": "APPLY-1"
+    },
+    {
+      "from": "FR-3-implement",
+      "to": "APPLY-1"
+    },
+    {
+      "from": "FR-4-implement",
+      "to": "APPLY-1"
+    },
+    {
+      "from": "FR-5-implement",
+      "to": "APPLY-1"
+    },
+    {
+      "from": "FR-6-implement",
+      "to": "APPLY-1"
+    },
+    {
+      "from": "FR-7-implement",
+      "to": "APPLY-1"
+    },
+    {
+      "from": "FR-1-test",
+      "to": "SEC-1"
+    },
+    {
+      "from": "FR-2-test",
+      "to": "SEC-1"
+    },
+    {
+      "from": "FR-3-test",
+      "to": "SEC-1"
+    },
+    {
+      "from": "FR-4-test",
+      "to": "SEC-1"
+    },
+    {
+      "from": "FR-5-test",
+      "to": "SEC-1"
+    },
+    {
+      "from": "FR-6-test",
+      "to": "SEC-1"
+    },
+    {
+      "from": "FR-7-test",
+      "to": "SEC-1"
+    },
+    {
+      "from": "SEC-1",
+      "to": "REL-1"
+    },
+    {
+      "from": "FR-1-document",
+      "to": "REL-1"
+    },
+    {
+      "from": "FR-2-document",
+      "to": "REL-1"
+    },
+    {
+      "from": "FR-3-document",
+      "to": "REL-1"
+    },
+    {
+      "from": "FR-4-document",
+      "to": "REL-1"
+    },
+    {
+      "from": "FR-5-document",
+      "to": "REL-1"
+    },
+    {
+      "from": "FR-6-document",
+      "to": "REL-1"
+    },
+    {
+      "from": "FR-7-document",
+      "to": "REL-1"
+    }
+  ],
+  "kind": "greenfield",
+  "markdown": "# URL shortener service\n\n| Task | Stage | Depends on | Status |\n| --- | --- | --- | --- |\n| `PLAN-1` Publish the task subgraph for this brief | planning | - | succeeded |\n| `FR-1-design` Design FR-1: Create a short link with POST /api/v1/urls. | architecture | - | succeeded |\n| `FR-1-implement` Implement FR-1 | implementation | FR-1-design | succeeded |\n| `FR-1-test` Test FR-1 | testing | FR-1-implement | pending |\n| `FR-1-document` Document FR-1 | documentation | FR-1-implement | pending |\n| `FR-2-design` Design FR-2: Redirect with GET /{code} and record the click. | architecture | - | succeeded |\n| `FR-2-implement` Implement FR-2 | implementation | FR-2-design | succeeded |\n| `FR-2-test` Test FR-2 | testing | FR-2-implement | pending |\n| `FR-2-document` Document FR-2 | documentation | FR-2-implement | pending |\n| `FR-3-design` Design FR-3: Read metadata with GET /api/v1/urls/{code}. | architecture | - | succeeded |\n| `FR-3-implement` Implement FR-3 | implementation | FR-3-design, FR-2-implement | succeeded |\n| `FR-3-test` Test FR-3 | testing | FR-3-implement | pending |\n| `FR-3-document` Document FR-3 | documentation | FR-3-implement | pending |\n| `FR-4-design` Design FR-4: Read analytics with GET /api/v1/urls/{code}/stats. | architecture | - | succeeded |\n| `FR-4-implement` Implement FR-4 | implementation | FR-4-design, FR-2-implement | succeeded |\n| `FR-4-test` Test FR-4 | testing | FR-4-implement | pending |\n| `FR-4-document` Document FR-4 | documentation | FR-4-implement | pending |\n| `FR-5-design` Design FR-5: Disable a link with DELETE /api/v1/urls/{code}. | architecture | - | succeeded |\n| `FR-5-implement` Implement FR-5 | implementation | FR-5-design, FR-2-implement | succeeded |\n| `FR-5-test` Test FR-5 | testing | FR-5-implement | pending |\n| `FR-5-document` Document FR-5 | documentation | FR-5-implement | pending |\n| `FR-6-design` Design FR-6: Report process health with GET /health. | architecture | - | succeeded |\n| `FR-6-implement` Implement FR-6 | implementation | FR-6-design | succeeded |\n| `FR-6-test` Test FR-6 | testing | FR-6-implement | pending |\n| `FR-6-document` Document FR-6 | documentation | FR-6-implement | pending |\n| `FR-7-design` Design FR-7: Report dependency readiness with GET /ready. | architecture | - | succeeded |\n| `FR-7-implement` Implement FR-7 | implementation | FR-7-design | succeeded |\n| `FR-7-test` Test FR-7 | testing | FR-7-implement | pending |\n| `FR-7-document` Document FR-7 | documentation | FR-7-implement | pending |\n| `APPLY-1` Apply the generated patch inside the run workspace | apply_patch | FR-1-implement, FR-2-implement, FR-3-implement, FR-4-implement, FR-5-implement, FR-6-implement, FR-7-implement | succeeded |\n| `SEC-1` Security and compliance review | security_review | FR-1-test, FR-2-test, FR-3-test, FR-4-test, FR-5-test, FR-6-test, FR-7-test | pending |\n| `REL-1` Release readiness | release_readiness | SEC-1, FR-1-document, FR-2-document, FR-3-document, FR-4-document, FR-5-document, FR-6-document, FR-7-document | pending |\n",
+  "tasks": [
+    {
+      "depends_on": [],
+      "id": "PLAN-1",
+      "inputs": [
+        "normalized_requirements"
+      ],
+      "outputs": [
+        "task_plan"
+      ],
+      "owning_stage": "planning",
+      "requirement_id": null,
+      "status": "succeeded",
+      "title": "Publish the task subgraph for this brief"
+    },
+    {
+      "depends_on": [],
+      "id": "FR-1-design",
+      "inputs": [
+        "normalized_requirements"
+      ],
+      "outputs": [
+        "design"
+      ],
+      "owning_stage": "architecture",
+      "requirement_id": "FR-1",
+      "status": "succeeded",
+      "title": "Design FR-1: Create a short link with POST /api/v1/urls."
+    },
+    {
+      "depends_on": [
+        "FR-1-design"
+      ],
+      "id": "FR-1-implement",
+      "inputs": [
+        "design"
+      ],
+      "outputs": [
+        "code_patch",
+        "implementation_report"
+      ],
+      "owning_stage": "implementation",
+      "requirement_id": "FR-1",
+      "status": "succeeded",
+      "title": "Implement FR-1"
+    },
+    {
+      "depends_on": [
+        "FR-1-implement"
+      ],
+      "id": "FR-1-test",
+      "inputs": [
+        "implementation_report"
+      ],
+      "outputs": [
+        "test_report"
+      ],
+      "owning_stage": "testing",
+      "requirement_id": "FR-1",
+      "status": "pending",
+      "title": "Test FR-1"
+    },
+    {
+      "depends_on": [
+        "FR-1-implement"
+      ],
+      "id": "FR-1-document",
+      "inputs": [
+        "design",
+        "implementation_report"
+      ],
+      "outputs": [
+        "docs_snippet"
+      ],
+      "owning_stage": "documentation",
+      "requirement_id": "FR-1",
+      "status": "pending",
+      "title": "Document FR-1"
+    },
+    {
+      "depends_on": [],
+      "id": "FR-2-design",
+      "inputs": [
+        "normalized_requirements"
+      ],
+      "outputs": [
+        "design"
+      ],
+      "owning_stage": "architecture",
+      "requirement_id": "FR-2",
+      "status": "succeeded",
+      "title": "Design FR-2: Redirect with GET /{code} and record the click."
+    },
+    {
+      "depends_on": [
+        "FR-2-design"
+      ],
+      "id": "FR-2-implement",
+      "inputs": [
+        "design"
+      ],
+      "outputs": [
+        "code_patch",
+        "implementation_report"
+      ],
+      "owning_stage": "implementation",
+      "requirement_id": "FR-2",
+      "status": "succeeded",
+      "title": "Implement FR-2"
+    },
+    {
+      "depends_on": [
+        "FR-2-implement"
+      ],
+      "id": "FR-2-test",
+      "inputs": [
+        "implementation_report"
+      ],
+      "outputs": [
+        "test_report"
+      ],
+      "owning_stage": "testing",
+      "requirement_id": "FR-2",
+      "status": "pending",
+      "title": "Test FR-2"
+    },
+    {
+      "depends_on": [
+        "FR-2-implement"
+      ],
+      "id": "FR-2-document",
+      "inputs": [
+        "design",
+        "implementation_report"
+      ],
+      "outputs": [
+        "docs_snippet"
+      ],
+      "owning_stage": "documentation",
+      "requirement_id": "FR-2",
+      "status": "pending",
+      "title": "Document FR-2"
+    },
+    {
+      "depends_on": [],
+      "id": "FR-3-design",
+      "inputs": [
+        "normalized_requirements"
+      ],
+      "outputs": [
+        "design"
+      ],
+      "owning_stage": "architecture",
+      "requirement_id": "FR-3",
+      "status": "succeeded",
+      "title": "Design FR-3: Read metadata with GET /api/v1/urls/{code}."
+    },
+    {
+      "depends_on": [
+        "FR-3-design",
+        "FR-2-implement"
+      ],
+      "id": "FR-3-implement",
+      "inputs": [
+        "design"
+      ],
+      "outputs": [
+        "code_patch",
+        "implementation_report"
+      ],
+      "owning_stage": "implementation",
+      "requirement_id": "FR-3",
+      "status": "succeeded",
+      "title": "Implement FR-3"
+    },
+    {
+      "depends_on": [
+        "FR-3-implement"
+      ],
+      "id": "FR-3-test",
+      "inputs": [
+        "implementation_report"
+      ],
+      "outputs": [
+        "test_report"
+      ],
+      "owning_stage": "testing",
+      "requirement_id": "FR-3",
+      "status": "pending",
+      "title": "Test FR-3"
+    },
+    {
+      "depends_on": [
+        "FR-3-implement"
+      ],
+      "id": "FR-3-document",
+      "inputs": [
+        "design",
+        "implementation_report"
+      ],
+      "outputs": [
+        "docs_snippet"
+      ],
+      "owning_stage": "documentation",
+      "requirement_id": "FR-3",
+      "status": "pending",
+      "title": "Document FR-3"
+    },
+    {
+      "depends_on": [],
+      "id": "FR-4-design",
+      "inputs": [
+        "normalized_requirements"
+      ],
+      "outputs": [
+        "design"
+      ],
+      "owning_stage": "architecture",
+      "requirement_id": "FR-4",
+      "status": "succeeded",
+      "title": "Design FR-4: Read analytics with GET /api/v1/urls/{code}/stats."
+    },
+    {
+      "depends_on": [
+        "FR-4-design",
+        "FR-2-implement"
+      ],
+      "id": "FR-4-implement",
+      "inputs": [
+        "design"
+      ],
+      "outputs": [
+        "code_patch",
+        "implementation_report"
+      ],
+      "owning_stage": "implementation",
+      "requirement_id": "FR-4",
+      "status": "succeeded",
+      "title": "Implement FR-4"
+    },
+    {
+      "depends_on": [
+        "FR-4-implement"
+      ],
+      "id": "FR-4-test",
+      "inputs": [
+        "implementation_report"
+      ],
+      "outputs": [
+        "test_report"
+      ],
+      "owning_stage": "testing",
+      "requirement_id": "FR-4",
+      "status": "pending",
+      "title": "Test FR-4"
+    },
+    {
+      "depends_on": [
+        "FR-4-implement"
+      ],
+      "id": "FR-4-document",
+      "inputs": [
+        "design",
+        "implementation_report"
+      ],
+      "outputs": [
+        "docs_snippet"
+      ],
+      "owning_stage": "documentation",
+      "requirement_id": "FR-4",
+      "status": "pending",
+      "title": "Document FR-4"
+    },
+    {
+      "depends_on": [],
+      "id": "FR-5-design",
+      "inputs": [
+        "normalized_requirements"
+      ],
+      "outputs": [
+        "design"
+      ],
+      "owning_stage": "architecture",
+      "requirement_id": "FR-5",
+      "status": "succeeded",
+      "title": "Design FR-5: Disable a link with DELETE /api/v1/urls/{code}."
+    },
+    {
+      "depends_on": [
+        "FR-5-design",
+        "FR-2-implement"
+      ],
+      "id": "FR-5-implement",
+      "inputs": [
+        "design"
+      ],
+      "outputs": [
+        "code_patch",
+        "implementation_report"
+      ],
+      "owning_stage": "implementation",
+      "requirement_id": "FR-5",
+      "status": "succeeded",
+      "title": "Implement FR-5"
+    },
+    {
+      "depends_on": [
+        "FR-5-implement"
+      ],
+      "id": "FR-5-test",
+      "inputs": [
+        "implementation_report"
+      ],
+      "outputs": [
+        "test_report"
+      ],
+      "owning_stage": "testing",
+      "requirement_id": "FR-5",
+      "status": "pending",
+      "title": "Test FR-5"
+    },
+    {
+      "depends_on": [
+        "FR-5-implement"
+      ],
+      "id": "FR-5-document",
+      "inputs": [
+        "design",
+        "implementation_report"
+      ],
+      "outputs": [
+        "docs_snippet"
+      ],
+      "owning_stage": "documentation",
+      "requirement_id": "FR-5",
+      "status": "pending",
+      "title": "Document FR-5"
+    },
+    {
+      "depends_on": [],
+      "id": "FR-6-design",
+      "inputs": [
+        "normalized_requirements"
+      ],
+      "outputs": [
+        "design"
+      ],
+      "owning_stage": "architecture",
+      "requirement_id": "FR-6",
+      "status": "succeeded",
+      "title": "Design FR-6: Report process health with GET /health."
+    },
+    {
+      "depends_on": [
+        "FR-6-design"
+      ],
+      "id": "FR-6-implement",
+      "inputs": [
+        "design"
+      ],
+      "outputs": [
+        "code_patch",
+        "implementation_report"
+      ],
+      "owning_stage": "implementation",
+      "requirement_id": "FR-6",
+      "status": "succeeded",
+      "title": "Implement FR-6"
+    },
+    {
+      "depends_on": [
+        "FR-6-implement"
+      ],
+      "id": "FR-6-test",
+      "inputs": [
+        "implementation_report"
+      ],
+      "outputs": [
+        "test_report"
+      ],
+      "owning_stage": "testing",
+      "requirement_id": "FR-6",
+      "status": "pending",
+      "title": "Test FR-6"
+    },
+    {
+      "depends_on": [
+        "FR-6-implement"
+      ],
+      "id": "FR-6-document",
+      "inputs": [
+        "design",
+        "implementation_report"
+      ],
+      "outputs": [
+        "docs_snippet"
+      ],
+      "owning_stage": "documentation",
+      "requirement_id": "FR-6",
+      "status": "pending",
+      "title": "Document FR-6"
+    },
+    {
+      "depends_on": [],
+      "id": "FR-7-design",
+      "inputs": [
+        "normalized_requirements"
+      ],
+      "outputs": [
+        "design"
+      ],
+      "owning_stage": "architecture",
+      "requirement_id": "FR-7",
+      "status": "succeeded",
+      "title": "Design FR-7: Report dependency readiness with GET /ready."
+    },
+    {
+      "depends_on": [
+        "FR-7-design"
+      ],
+      "id": "FR-7-implement",
+      "inputs": [
+        "design"
+      ],
+      "outputs": [
+        "code_patch",
+        "implementation_report"
+      ],
+      "owning_stage": "implementation",
+      "requirement_id": "FR-7",
+      "status": "succeeded",
+      "title": "Implement FR-7"
+    },
+    {
+      "depends_on": [
+        "FR-7-implement"
+      ],
+      "id": "FR-7-test",
+      "inputs": [
+        "implementation_report"
+      ],
+      "outputs": [
+        "test_report"
+      ],
+      "owning_stage": "testing",
+      "requirement_id": "FR-7",
+      "status": "pending",
+      "title": "Test FR-7"
+    },
+    {
+      "depends_on": [
+        "FR-7-implement"
+      ],
+      "id": "FR-7-document",
+      "inputs": [
+        "design",
+        "implementation_report"
+      ],
+      "outputs": [
+        "docs_snippet"
+      ],
+      "owning_stage": "documentation",
+      "requirement_id": "FR-7",
+      "status": "pending",
+      "title": "Document FR-7"
+    },
+    {
+      "depends_on": [
+        "FR-1-implement",
+        "FR-2-implement",
+        "FR-3-implement",
+        "FR-4-implement",
+        "FR-5-implement",
+        "FR-6-implement",
+        "FR-7-implement"
+      ],
+      "id": "APPLY-1",
+      "inputs": [
+        "code_patch"
+      ],
+      "outputs": [
+        "apply_report"
+      ],
+      "owning_stage": "apply_patch",
+      "requirement_id": null,
+      "status": "succeeded",
+      "title": "Apply the generated patch inside the run workspace"
+    },
+    {
+      "depends_on": [
+        "FR-1-test",
+        "FR-2-test",
+        "FR-3-test",
+        "FR-4-test",
+        "FR-5-test",
+        "FR-6-test",
+        "FR-7-test"
+      ],
+      "id": "SEC-1",
+      "inputs": [
+        "implementation_report",
+        "apply_report"
+      ],
+      "outputs": [
+        "security_review"
+      ],
+      "owning_stage": "security_review",
+      "requirement_id": null,
+      "status": "pending",
+      "title": "Security and compliance review"
+    },
+    {
+      "depends_on": [
+        "SEC-1",
+        "FR-1-document",
+        "FR-2-document",
+        "FR-3-document",
+        "FR-4-document",
+        "FR-5-document",
+        "FR-6-document",
+        "FR-7-document"
+      ],
+      "id": "REL-1",
+      "inputs": [
+        "test_report",
+        "docs_snippet",
+        "security_review"
+      ],
+      "outputs": [
+        "release_report"
+      ],
+      "owning_stage": "release_readiness",
+      "requirement_id": null,
+      "status": "pending",
+      "title": "Release readiness"
+    }
+  ],
+  "title": "URL shortener service"
+}

@@ -116,8 +116,8 @@ def _decisions() -> list[dict]:
             "why": "A replay must return the original row. Recomputing ttl from 'now' would mint a second link.",
         },
         {
-            "decision": "The implementation stage verifies the repository and does not rewrite it",
-            "why": "Code changes stay in reviewable commits. The workflow proves the tree matches the requirements.",
+            "decision": "Generated patches land in the run workspace, not in the main checkout",
+            "why": "A missing route becomes a unified diff and new files. Applying them requires approval. The main tree stays clean.",
         },
     ]
 

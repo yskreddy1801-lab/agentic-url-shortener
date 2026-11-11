@@ -1,19 +1,19 @@
 {
   "config": {
     "kind": "brownfield",
-    "title": "Add custom aliases and expiration to the existing service"
+    "title": "Add bulk creation on top of the existing shortener"
   },
-  "created_at": "2026-11-06T17:39:20.813433+00:00",
-  "finished_at": "2026-11-06T17:39:22.058624+00:00",
+  "created_at": "2026-11-11T15:47:43.617774+00:00",
+  "finished_at": "2026-11-11T15:47:45.342643+00:00",
   "human_input": null,
-  "id": "run_7a9e509fe601",
+  "id": "run_a26b7a4852f2",
   "mode": "demo",
   "pause_details": null,
   "pause_kind": null,
   "pause_stage": null,
   "scenario": "brownfield",
-  "started_at": "2026-11-06T17:39:20.813433+00:00",
+  "started_at": "2026-11-11T15:47:43.617774+00:00",
   "status": "succeeded",
   "stop_requested": false,
-  "updated_at": "2026-11-06T17:39:22.058797+00:00"
+  "updated_at": "2026-11-11T15:47:45.342815+00:00"
 }

@@ -6,9 +6,9 @@ The assignment asks for two things that are easy to fake separately and hard to 
 
 The shortener is a small FastAPI service with one SQLite database. The interesting constraints are the ones that show up in review: scheme validation, reserved aliases, non-sequential codes, idempotent create, soft delete, expiry that a cached redirect cannot ignore, and stats that still exist after a link is turned off.
 
-The orchestrator is a second component with its own database. Stages are data (`StageSpec`: dependencies, gates, retry budget, fallback, approval). The scheduler computes the ready set and runs that set together. Release readiness depends on testing, documentation, and security review, so it cannot start until that wave finishes. That is the parallel path and the barrier.
+The orchestrator is a second component with its own database. Stages are data (`StageSpec`: dependencies, gates, retry budget, fallback, approval). After requirements, a planning stage builds an FR-level task subgraph for that brief. The scheduler runs ready stages together. Testing, documentation, and security review share one wave after the patch has been applied. Release readiness waits for that barrier.
 
-Handlers are ordinary Python. They normalize text, parse the shortener with `ast`, run pytest, scan artifacts, and write JSON. There is no model client. An optional model would be an extra reader of the same artifacts; the run does not need one to finish.
+Handlers are ordinary Python. They normalize text, build the task plan, parse the shortener with `ast`, generate a unified diff from templates when a requirement is missing, run pytest in a workspace copy, scan artifacts, and enforce compliance controls. There is no model client.
 
 Human control sits on two checkpoints. An ambiguous brief pauses before design, with the alternatives stored on the run. Release pauses before the checklist handler. Demo mode performs those pauses in the log and then applies a named rule (`max_rubric_score_then_lexical_id`, `demo_auto_approve`) so a CLI demo can finish. The actor on those rows is `demo_policy`, and the release checklist repeats that this is not a person's sign-off.
 
@@ -16,12 +16,12 @@ Human control sits on two checkpoints. An ambiguous brief pauses before design, 
 
 - Create, redirect, metadata, stats, soft delete, health, and readiness.
 - Validation for schemes and aliases, idempotency, collision retry, create rate limit, JSON errors, JSON access logs.
-- A seven-stage graph with entry and exit gates, retries, a testing fallback, safe-stop, rollback to a checkpoint, policy blocks, and re-plan that bumps a generation and keeps prior attempts.
+- A nine-stage graph with entry and exit gates, a per-brief task plan, deterministic code generation, workspace apply with approval, retries, a testing fallback, safe-stop, rollback of a failed patch, policy and compliance gates, and re-plan that bumps a generation and keeps prior attempts.
 - Hash-chained audit events and metrics derived from those events.
 - CLI and HTTP control plane.
 - Three scenarios, with their latest artifacts checked in under `artifacts/scenarios/`.
 
-The current demo run of the full graph reports stage success rate 1.0, zero retries, zero rollbacks, and peak parallelism 3. End-to-end time on this machine is about 1.3 seconds per scenario, most of it in the nested pytest process.
+The current demo runs report stage success rate 1.0, zero retries, zero rollbacks, and peak parallelism 3. End-to-end time on this machine is about 1.6 seconds per scenario, most of it in the workspace pytest process. Greenfield records 32 tasks and two demo approvals (scaffold apply, then release). Brownfield records 8 tasks, generates `POST /api/v1/urls/bulk`, and applies it only in the run workspace. Ambiguous records the analytics decision and a single release approval because that route already exists.
 
 ## Artifacts
 
@@ -29,7 +29,10 @@ The current demo run of the full graph reports stage success rate 1.0, zero retr
 | --- | --- | --- |
 | `normalized_requirements.json` | requirements | FRs with acceptance, constraints, ambiguity signals |
 | `design.md` / `design.json` | architecture | Routes tied to source functions, decisions, and for brownfield the impact section |
-| `implementation_report.json` | implementation | Each FR satisfied or a named gap |
+| `task_plan.md` | planning, updated by later stages | FR tasks, dependencies, owning stage, status |
+| `code_patch.diff` | implementation | Unified diff of generated files, when a patch is required |
+| `apply_report.json` | apply_patch | Whether the patch was applied, and the workspace path |
+| `implementation_report.json` | implementation | Each FR satisfied, or a gap covered by a generated patch |
 | `test_report.json` | testing | Pytest command, exit code, tail of output |
 | `docs_snippet.md` | documentation | Caller-facing summary of the requirements in scope |
 | `security_review.json` | security_review | Blocking findings, plus the standing product risks |
@@ -60,14 +63,15 @@ Orchestrator tests exercise the default edges and the approval flag, overlapping
 | Idempotent create mints a second expiry | Fingerprint is the request body, not `now + ttl`. |
 | Click insert failure breaks the redirect | Insert failure is logged and the 302 still returns. |
 | Ambiguous brief gets a silent guess | Detector refuses to proceed without a decision record. Demo selection is a published rubric, stored with the rejected alternatives. |
-| Workflow edits code on its own | Implementation stage only verifies. A requirement it cannot point at a route or symbol fails the stage. |
+| Workflow edits the main checkout on its own | Patches are generated as artifacts and applied only under `artifacts/workspaces/<run_id>/` after an approval checkpoint. A failed suite rolls that copy back. |
 | Secret lands in an artifact | `policy_clear` fails the stage on the first attempt. |
 | Breaking change slips through | Release checklist requires `accept_breaking` on the approval when the design lists one. Demo does not set that flag, so a breaking interpretation cannot be marked ready by the demo rule. |
-| Red tests reported as green | Testing fallback writes `passed: false`. The checklist item fails. |
+| Red tests reported as green | Testing fallback writes `passed: false`. A failed generated patch is rolled back. The checklist item fails. |
+| Click logs keep query tokens or emails | `sanitize_referrer` strips the query and fragment and hashes email-bearing values. `POST /api/v1/compliance/purge` enforces `click_retention_days`. The compliance gate fails the run if those controls are absent. |
 | Stale approval after an upstream edit | Re-plan invalidates downstream decisions, so release asks again. |
 | Audit log edited in place | Each event hashes the previous hash. Tests recompute the chain. |
 
-Trade-off I would defend: the testing stage runs a fixed suite instead of generating tests from acceptance text. Generating tests inside the same process that then grades them is easy to game, and it is a poor use of a prototype without a model. The suite is written against the contract, and the test report says that limitation in its `note` field. The cost is that a brand-new acceptance sentence is not automatically covered by a new test. The implementation stage still fails if the requirement does not name a real route.
+Trade-off I would defend: code generation is template-based. `POST /api/v1/urls/bulk` has a template (module, route, app include, test). A gap with no template fails the implementation stage instead of inventing an API. Greenfield does not regenerate the working service; it writes a sandbox scaffold and says so in the patch summary. The cost is that an unseen endpoint shape is not synthesized. The gain is a diff a person can read, applied only in a workspace, and covered by a generated test when the template includes one.
 
 Trade-off I would also defend: demo auto-approval. A take-home has to finish in one command. Hiding the checkpoint would be worse. The log shows the pause that a supervised run would honor.
 
@@ -76,7 +80,7 @@ Trade-off I would also defend: demo auto-approval. A take-home has to finish in 
 - One process and one machine. SQLite is the system of record for links and for runs.
 - Callers are trusted enough to create links. There is no tenancy.
 - "Release" means a readiness report a person can read. This prototype does not deploy, tag, or migrate a second environment.
-- The shortener code in this repository is the implementation under review. The greenfield scenario audits that code against a clear brief. It does not regenerate the service from the brief.
+- The shortener in this repository is the base implementation. Greenfield audits it and adds a sandbox scaffold in the run workspace. Brownfield's bulk-create patch is generated per run and is not merged into `src/`.
 - The ambiguity catalog is specific to a URL shortener. A different product would need its own interpretations and rubric. The pause, the lineage, and the refusal to continue without a decision are the reusable parts.
 - Clocks are UTC. Expiry uses the application clock injected on the app, which tests freeze.
 
@@ -84,7 +88,7 @@ Trade-off I would also defend: demo auto-approval. A take-home has to finish in 
 
 - The rate limiter is memory inside one process. A second worker has its own window. Restart clears it.
 - SQLite and a single writer lock will not carry a large click volume. Stats queries are indexed by link and day; they are not a warehouse.
-- Referrers are stored raw, with no retention job and no stripping.
+- Referrers are stripped of query strings and fragments. Email-bearing values are hashed. Retention is one global day window, not a per-tenant policy.
 - Create, metadata, stats, and delete are unauthenticated.
 - The orchestrator executes inside the API process (the CLI runs it in-process too). `POST /api/v1/runs` waits about a second and then expects the client to poll. A production runner would be a queue and a worker with a lease.
 - Rollback restores artifact pointers and stage status. It does not revert git commits, because the workflow does not make commits.

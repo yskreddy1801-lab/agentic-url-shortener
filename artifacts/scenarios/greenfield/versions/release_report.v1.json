@@ -8,15 +8,21 @@
       "status": "pass"
     },
     {
+      "evidence": "task_plan",
+      "item": "Task plan executed for this brief",
+      "note": "32 tasks",
+      "status": "pass"
+    },
+    {
       "evidence": "design",
       "item": "Architecture and design written",
       "note": "",
       "status": "pass"
     },
     {
-      "evidence": "implementation_report",
-      "item": "Implementation mapped onto the repository",
-      "note": "",
+      "evidence": "code_patch",
+      "item": "Generated patch applied in the run workspace",
+      "note": "Product routes already exist. Generate a sandbox contract scaffold so the implementation stage still produces a reviewable diff.",
       "status": "pass"
     },
     {
@@ -44,13 +50,19 @@
       "status": "pass"
     },
     {
+      "evidence": "security_review",
+      "item": "Compliance controls: retention, purge, and referrer sanitizing",
+      "note": "",
+      "status": "pass"
+    },
+    {
       "evidence": "",
       "item": "Breaking-change control",
       "note": "No breaking changes were declared.",
       "status": "pass"
     },
     {
-      "evidence": "dec_c0ec25a51d",
+      "evidence": "dec_52cca6209b",
       "item": "Release checkpoint approved",
       "note": "Approved by demo_policy after the pre-approval checkpoint. Supervised mode would wait for a person. Demo mode records the pre-approval checkpoint and then auto-approves so a CLI run can finish. This is not a human release sign-off.",
       "status": "pass"
@@ -61,10 +73,9 @@
     "SQLite and the in-memory rate limiter are process-local.",
     "Create, stats, and delete are unauthenticated. A custom alias is a guessable capability.",
     "The orchestrator runs in-process. It is not an isolated worker fleet.",
-    "The implementation stage verifies the repository. It does not rewrite or merge code.",
-    "The testing stage runs a fixed suite. It does not generate new tests from acceptance text.",
+    "Generated patches are applied only inside a run workspace. They are not merged to the main checkout.",
     "Demo approval is recorded in the audit log. It is not a production change-management control.",
-    "Click analytics stores referrers with no retention window."
+    "Referrer retention is a fixed day window in one SQLite file, not a per-tenant policy."
   ],
   "ready": true,
   "recommendation": "accept_for_prototype_with_known_limits",

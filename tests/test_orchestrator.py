@@ -31,11 +31,14 @@ def _engine(tmp_path, stages, handlers):
 def test_default_graph_shape():
     graph = default_sdlc_graph()
     assert graph.stage("requirements").depends_on == ()
-    assert graph.stage("architecture").depends_on == ("requirements",)
+    assert graph.stage("planning").depends_on == ("requirements",)
+    assert graph.stage("architecture").depends_on == ("planning",)
     assert graph.stage("implementation").depends_on == ("architecture",)
-    assert graph.stage("testing").depends_on == ("implementation",)
-    assert graph.stage("documentation").depends_on == ("implementation",)
-    assert graph.stage("security_review").depends_on == ("implementation",)
+    assert graph.stage("apply_patch").depends_on == ("implementation",)
+    assert graph.stage("testing").depends_on == ("apply_patch",)
+    assert graph.stage("documentation").depends_on == ("apply_patch",)
+    assert graph.stage("security_review").depends_on == ("apply_patch",)
+    assert "compliance_controls" in graph.stage("security_review").exit_gates
     assert set(graph.stage("release_readiness").depends_on) == {"testing", "documentation", "security_review"}
     assert graph.stage("release_readiness").requires_approval is True
     assert graph.stage("testing").fallback_handler == "testing_fallback"
@@ -317,12 +320,12 @@ def test_ambiguity_detector_and_rubric():
     green = normalize_brief(GREENFIELD_BRIEF, kind="greenfield")
     assert len(green["functional_requirements"]) == 7
     brown = normalize_brief(BROWNFIELD_BRIEF, kind="brownfield")
-    assert len(brown["functional_requirements"]) == 3
+    assert len(brown["functional_requirements"]) == 1
     assert brown["constraints"]
 
 
 def test_design_cites_exact_routes_not_path_prefixes():
-    requirements = normalize_brief(BROWNFIELD_BRIEF, kind="brownfield")
+    requirements = normalize_brief(GREENFIELD_BRIEF, kind="greenfield")
     design = build_design(requirements, scan_repository(repo_root()))
     cited = {(api["method"], api["path"]) for api in design["apis"]}
     assert ("GET", "/") not in cited

@@ -21,6 +21,7 @@ class Settings(BaseModel):
     base_url: str = "http://127.0.0.1:8741"
     code_length: int = 7
     log_level: str = "INFO"
+    click_retention_days: int = 30
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -35,4 +36,5 @@ class Settings(BaseModel):
             base_url=os.environ.get("BASE_URL", "http://127.0.0.1:8741"),
             code_length=int(os.environ.get("CODE_LENGTH", "7")),
             log_level=os.environ.get("LOG_LEVEL", "INFO"),
+            click_retention_days=int(os.environ.get("CLICK_RETENTION_DAYS", "30")),
         )

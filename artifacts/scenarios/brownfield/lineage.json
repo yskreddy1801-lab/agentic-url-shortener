@@ -1,56 +1,133 @@
 {
   "artifacts": [
     {
-      "hash": "dd27b46ddb1f2c8eb217af6302c5904e55fdc6537f0669b92839df347ddc5c3e",
+      "hash": "f27087c48a8ef3beaad9de8279e41ad91de50bcbaa0cb2106a06eab8cb823c9e",
+      "is_current": true,
+      "name": "apply_report",
+      "stage_id": "apply_patch",
+      "version": 1
+    },
+    {
+      "hash": "5b93093f61ac8fb72af85e628d1da711f782ad27d9c83943fd50659d8654738f",
+      "is_current": true,
+      "name": "code_patch",
+      "stage_id": "implementation",
+      "version": 1
+    },
+    {
+      "hash": "b09246b318ccf581074105aa240276ed92dbab79da4aa8439b502a616e96eb2e",
       "is_current": true,
       "name": "design",
       "stage_id": "architecture",
       "version": 1
     },
     {
-      "hash": "bac1749b36740ffae1efc9e751aaf4541e967ed1bc9e42308bbe3bc375a04a89",
+      "hash": "7377b550f4d1df7f8a5d7d1ec79e8e0f4b9ea821483a5502fb254f4192dce5b5",
       "is_current": true,
       "name": "docs_snippet",
       "stage_id": "documentation",
       "version": 1
     },
     {
-      "hash": "38c77e52be5cbe55f5d52acacaf99ff0b0b05d6dfcc77158406be48679752e14",
+      "hash": "b8a0bda2839bb5f2e247d8d33157ac531a998665e14cc042e41ed7c1629e92ee",
       "is_current": true,
       "name": "implementation_report",
       "stage_id": "implementation",
       "version": 1
     },
     {
-      "hash": "83c40b36babf66a369c9ffdea0fc86a168e091ba747207af41486aaadbfc80a4",
+      "hash": "78c0dd75ff04231cf77e748e9766d1de7d3a5d07e2a523d7e0125c685ce1dac8",
       "is_current": true,
       "name": "normalized_requirements",
       "stage_id": "requirements",
       "version": 1
     },
     {
-      "hash": "1ce0d175f987f7a43f2ebe8b6fea885951f932841098b258d8651221ac126ee4",
+      "hash": "22b49763c93c9d4cfac43aa3a25f7fdc919416e34bd050dd8e86940518c7fc5b",
       "is_current": true,
       "name": "release_checklist",
       "stage_id": "release_readiness",
       "version": 1
     },
     {
-      "hash": "1a11361b1b9d5ed1f51782497402519a807682fd73339263c5614dfd243a7011",
+      "hash": "e782e5dd3e339174b0996d19b238e7123ebb8defa81f94658f0c89843fe19d59",
       "is_current": true,
       "name": "release_report",
       "stage_id": "release_readiness",
       "version": 1
     },
     {
-      "hash": "072de968941e5d1ef2a9e265328a8567a751597376ee1d3992834a9e05ac8e6c",
+      "hash": "f7ad8672d7c3af0dab592fb83b3b949f91c5e3b9f7fad440552b949c6a85d29f",
       "is_current": true,
       "name": "security_review",
       "stage_id": "security_review",
       "version": 1
     },
     {
-      "hash": "f5fc728d2995d582ada6ac15adb4e2a74aba832815d159852fcdb1ffc0800e78",
+      "hash": "44aa38912c39495b8e8236360fd7686dbfa132bda7d9bc8622cddd34dbe39ac0",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "planning",
+      "version": 1
+    },
+    {
+      "hash": "37158f7c2f5b0b0e5dbfff7864ed936a89a63402d3d7a0c86078545813a2562d",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "planning",
+      "version": 2
+    },
+    {
+      "hash": "211681cc6eb9edee551845a791fcf609773c4570beadbce22d8536f88e1127ff",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "architecture",
+      "version": 3
+    },
+    {
+      "hash": "a5f4b5e408409cc1a7d9ae0d804915afc2b1f4641c7c3ce2339d8d4f21ca51eb",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "implementation",
+      "version": 4
+    },
+    {
+      "hash": "564039bf2d82bde3d176759377e8f9438b7f6bb1fdc7fab859c1e4895d174cc3",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "apply_patch",
+      "version": 5
+    },
+    {
+      "hash": "fd1ae0f209b544e4d56c68420ae0b4255ace5c790bdd5fa7668a6527ad438e86",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "testing",
+      "version": 6
+    },
+    {
+      "hash": "6f0738dba2a1957f850e63a85db98e31672927bcfbad293bab4e15ad74eb8417",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "documentation",
+      "version": 7
+    },
+    {
+      "hash": "45cc5afd4dff8cda23045c9ecea56594724da407913ddecbfa30abb4f8495f47",
+      "is_current": false,
+      "name": "task_plan",
+      "stage_id": "security_review",
+      "version": 8
+    },
+    {
+      "hash": "ba0f03825d426ca9d1bb079cb6852b1b3738dbc9e1346f70658ac1cd86a5b387",
+      "is_current": true,
+      "name": "task_plan",
+      "stage_id": "release_readiness",
+      "version": 9
+    },
+    {
+      "hash": "4a6e38ee921a12a16084b198fd59a8787e21258695c37b160f8b279dfeaad10a",
       "is_current": true,
       "name": "test_report",
       "stage_id": "testing",
@@ -59,48 +136,63 @@
   ],
   "checkpoints": [
     {
-      "created_at": "2026-11-06T17:39:20.821272+00:00",
-      "id": "ckpt_1dbdc13727",
+      "created_at": "2026-11-11T15:47:43.623377+00:00",
+      "id": "ckpt_056b390eb7",
       "label": "init"
     },
     {
-      "created_at": "2026-11-06T17:39:20.838940+00:00",
-      "id": "ckpt_0ca7490036",
+      "created_at": "2026-11-11T15:47:43.636193+00:00",
+      "id": "ckpt_a528fc3ad4",
       "label": "after:requirements"
     },
     {
-      "created_at": "2026-11-06T17:39:20.859899+00:00",
-      "id": "ckpt_43296b08fc",
+      "created_at": "2026-11-11T15:47:43.648826+00:00",
+      "id": "ckpt_788c2bd902",
+      "label": "after:planning"
+    },
+    {
+      "created_at": "2026-11-11T15:47:43.670270+00:00",
+      "id": "ckpt_e521555b70",
       "label": "after:architecture"
     },
     {
-      "created_at": "2026-11-06T17:39:20.885459+00:00",
-      "id": "ckpt_55a815cd40",
+      "created_at": "2026-11-11T15:47:43.693336+00:00",
+      "id": "ckpt_17428766bb",
       "label": "after:implementation"
     },
     {
-      "created_at": "2026-11-06T17:39:20.924763+00:00",
-      "id": "ckpt_2966ab6f00",
+      "created_at": "2026-11-11T15:47:43.704579+00:00",
+      "id": "ckpt_3f00739145",
+      "label": "pre_approval:apply_patch"
+    },
+    {
+      "created_at": "2026-11-11T15:47:43.718483+00:00",
+      "id": "ckpt_4a9c17cbe3",
+      "label": "after:apply_patch"
+    },
+    {
+      "created_at": "2026-11-11T15:47:43.754735+00:00",
+      "id": "ckpt_fb1e2a4b45",
       "label": "after:documentation"
     },
     {
-      "created_at": "2026-11-06T17:39:20.930152+00:00",
-      "id": "ckpt_4399329850",
+      "created_at": "2026-11-11T15:47:43.771953+00:00",
+      "id": "ckpt_47e9c81ca4",
       "label": "after:security_review"
     },
     {
-      "created_at": "2026-11-06T17:39:22.023615+00:00",
-      "id": "ckpt_984954b27b",
+      "created_at": "2026-11-11T15:47:45.294591+00:00",
+      "id": "ckpt_bd86bb77b1",
       "label": "after:testing"
     },
     {
-      "created_at": "2026-11-06T17:39:22.028303+00:00",
-      "id": "ckpt_359be59e47",
+      "created_at": "2026-11-11T15:47:45.309071+00:00",
+      "id": "ckpt_44d202223d",
       "label": "pre_approval:release_readiness"
     },
     {
-      "created_at": "2026-11-06T17:39:22.055915+00:00",
-      "id": "ckpt_529808e6e5",
+      "created_at": "2026-11-11T15:47:45.336817+00:00",
+      "id": "ckpt_f6f962e712",
       "label": "after:release_readiness"
     }
   ],
@@ -117,8 +209,35 @@
           "title": "Reject"
         }
       ],
-      "created_at": "2026-11-06T17:39:22.032029+00:00",
-      "id": "dec_e1a23bb729",
+      "created_at": "2026-11-11T15:47:43.706928+00:00",
+      "id": "dec_f922c402fd",
+      "invalidated": false,
+      "kind": "approval",
+      "payload": {
+        "accept_breaking": false,
+        "note": "demo auto-approve"
+      },
+      "question": "Applying a generated patch is a high-impact action. Approve it to write the patch into this run's workspace copy. The main checkout is not modified.",
+      "rationale": "Demo mode records the pre-apply checkpoint and then auto-approves so the generated patch can be written into the run workspace. This is not a human sign-off.",
+      "rule": "demo_auto_approve",
+      "run_id": "run_a26b7a4852f2",
+      "selected": "approved",
+      "stage_id": "apply_patch"
+    },
+    {
+      "actor": "demo_policy",
+      "alternatives": [
+        {
+          "id": "approved",
+          "title": "Approve"
+        },
+        {
+          "id": "rejected",
+          "title": "Reject"
+        }
+      ],
+      "created_at": "2026-11-11T15:47:45.311858+00:00",
+      "id": "dec_ea7ec3d103",
       "invalidated": false,
       "kind": "approval",
       "payload": {
@@ -128,10 +247,158 @@
       "question": "Release readiness is a high-impact checkpoint. Approve it to publish the release report.",
       "rationale": "Demo mode records the pre-approval checkpoint and then auto-approves so a CLI run can finish. This is not a human release sign-off.",
       "rule": "demo_auto_approve",
-      "run_id": "run_7a9e509fe601",
+      "run_id": "run_a26b7a4852f2",
       "selected": "approved",
       "stage_id": "release_readiness"
     }
   ],
-  "run_id": "run_7a9e509fe601"
+  "run_id": "run_a26b7a4852f2",
+  "task_plan": {
+    "edges": [
+      {
+        "from": "FR-1-design",
+        "to": "FR-1-implement"
+      },
+      {
+        "from": "FR-1-implement",
+        "to": "FR-1-test"
+      },
+      {
+        "from": "FR-1-implement",
+        "to": "FR-1-document"
+      },
+      {
+        "from": "FR-1-implement",
+        "to": "APPLY-1"
+      },
+      {
+        "from": "FR-1-test",
+        "to": "SEC-1"
+      },
+      {
+        "from": "SEC-1",
+        "to": "REL-1"
+      },
+      {
+        "from": "FR-1-document",
+        "to": "REL-1"
+      }
+    ],
+    "tasks": [
+      {
+        "depends_on": [],
+        "id": "PLAN-1",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "task_plan"
+        ],
+        "owning_stage": "planning",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [],
+        "id": "FR-1-design",
+        "inputs": [
+          "normalized_requirements"
+        ],
+        "outputs": [
+          "design"
+        ],
+        "owning_stage": "architecture",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-design"
+        ],
+        "id": "FR-1-implement",
+        "inputs": [
+          "design"
+        ],
+        "outputs": [
+          "code_patch",
+          "implementation_report"
+        ],
+        "owning_stage": "implementation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-implement"
+        ],
+        "id": "FR-1-test",
+        "inputs": [
+          "implementation_report"
+        ],
+        "outputs": [
+          "test_report"
+        ],
+        "owning_stage": "testing",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-implement"
+        ],
+        "id": "FR-1-document",
+        "inputs": [
+          "design",
+          "implementation_report"
+        ],
+        "outputs": [
+          "docs_snippet"
+        ],
+        "owning_stage": "documentation",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-implement"
+        ],
+        "id": "APPLY-1",
+        "inputs": [
+          "code_patch"
+        ],
+        "outputs": [
+          "apply_report"
+        ],
+        "owning_stage": "apply_patch",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "FR-1-test"
+        ],
+        "id": "SEC-1",
+        "inputs": [
+          "implementation_report",
+          "apply_report"
+        ],
+        "outputs": [
+          "security_review"
+        ],
+        "owning_stage": "security_review",
+        "status": "succeeded"
+      },
+      {
+        "depends_on": [
+          "SEC-1",
+          "FR-1-document"
+        ],
+        "id": "REL-1",
+        "inputs": [
+          "test_report",
+          "docs_snippet",
+          "security_review"
+        ],
+        "outputs": [
+          "release_report"
+        ],
+        "owning_stage": "release_readiness",
+        "status": "succeeded"
+      }
+    ]
+  }
 }
